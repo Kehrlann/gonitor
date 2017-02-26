@@ -3,3 +3,4 @@
 
 # Ignore compiled stuff
 *.exe
+debug.test

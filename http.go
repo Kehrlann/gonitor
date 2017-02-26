@@ -8,7 +8,7 @@ import (
 var timeout = 1 * time.Second
 
 // Run does blah
-func Run(url string, every time.Duration, messages chan<- *Message) {
+func Run(url string, every time.Duration, messages chan<- *StateChangeMessage) {
 	responseCodes := make(chan int)
 	go Analyze(url, responseCodes, messages)
 	for _ = range time.Tick(every) {

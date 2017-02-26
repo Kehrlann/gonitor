@@ -5,11 +5,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Message", func() {
+var _ = Describe("StateChangeMessage", func() {
 
 	Describe("Printing messages", func() {
-		var positiveMessage *Message
-		var negativeMessage *Message
+		var positiveMessage *StateChangeMessage
+		var negativeMessage *StateChangeMessage
 
 		BeforeEach(func() {
 			positiveMessage = NewMessage("http://test.com", true, []int{1, 2, 3})

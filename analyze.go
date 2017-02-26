@@ -2,7 +2,6 @@ package main
 
 import (
 	"container/ring"
-	"fmt"
 )
 
 const tries = 10
@@ -12,7 +11,7 @@ const recoveryThreshold = tries
 // Analyze takes a channel of response codes, and, every time it receives a new
 // response code, analyzes it's history, detects state transitions, e.g. running -> down
 // or down -> running, and emits the corresponding messages on the appropriate channel
-func Analyze(url string, responseCodes <-chan int, messages chan<- *Message) {
+func Analyze(url string, responseCodes <-chan int, messages chan<- *StateChangeMessage) {
 
 	isDown := false
 	lastTenCodes := ring.New(tries)
@@ -20,8 +19,9 @@ func Analyze(url string, responseCodes <-chan int, messages chan<- *Message) {
 	for code := range responseCodes {
 		lastTenCodes.Value = code
 		lastTenCodes = lastTenCodes.Next()
-		failure, recovery, codes := computeState(lastTenCodes)
-		fmt.Println(url, failure, codes)
+		codes := RingToIntSlice(lastTenCodes)
+
+		failure, recovery := computeState(codes)
 		if failure && !isDown {
 			isDown = true
 			messages <- NewMessage(url, false, codes)
@@ -33,20 +33,16 @@ func Analyze(url string, responseCodes <-chan int, messages chan<- *Message) {
 	}
 }
 
-func computeState(codesToAnalyze *ring.Ring) (
-	isFailure bool,
-	canRecover bool,
-	codes []int) {
-	failures, successes, codes := 0, 0, make([]int, 0, tries)
-	codesToAnalyze.Do(func(c interface{}) {
-		if i, ok := c.(int); ok {
-			codes = append(codes, i)
-			if i < 200 || i >= 300 {
-				failures++
-			} else {
-				successes++
-			}
+// computeState takes HTTP codes, and tells you whether this could trigger an
+// alarm, and whether it could trigger or a recovery.
+func computeState(codesToAnalyze []int) (isFailure bool, canRecover bool) {
+	failures, successes := 0, 0
+	for _, code := range codesToAnalyze {
+		if code < 200 || code >= 300 {
+			failures++
+		} else {
+			successes++
 		}
-	})
-	return failures >= failureThreshold, successes >= recoveryThreshold, codes
+	}
+	return failures >= failureThreshold, successes >= recoveryThreshold
 }

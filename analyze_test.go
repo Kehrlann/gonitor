@@ -1,88 +1,58 @@
 package main
 
 import (
-	"time"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-func consumeMessages(channel <-chan *Message) {
-	for _ = range channel {
-
-	}
-}
 
 var _ = Describe("Analyze", func() {
 
-	Describe("Computing state", func() {})
+	Describe("Computing state", func() {
 
-	Describe("Analyzing return codes", func() {
-		Context("Given only successes", func() {
-			It("Should not emit messages", func() {
-				responseCodes := make(chan int)
-				messages := make(chan *Message)
+		Context("Given all successes", func() {
 
-				go Consistently(messages, 1*time.Second).ShouldNot(Receive())
+			It("Should not be a failure", func() {
+				codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
+				failure, _ := computeState(codesToAnalyze)
+				Expect(failure).To(BeFalse())
+			})
 
-				go Analyze("fake_url", responseCodes, messages)
-
-				for i := 1; i <= 20; i++ {
-					responseCodes <- 200
-				}
+			It("Should allow recovery", func() {
+				codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
+				_, canRecover := computeState(codesToAnalyze)
+				Expect(canRecover).To(BeTrue())
 			})
 		})
 
-		Context("Given only errors", func() {
+		Context("Given one failure", func() {
 
-			It("Should not emit a message before threshold reached", func() {
-				responseCodes := make(chan int)
-				messages := make(chan *Message)
-
-				go Consistently(messages, 1*time.Second).ShouldNot(Receive())
-
-				go Analyze("fake_url", responseCodes, messages)
-
-				for i := 1; i <= 2; i++ {
-					responseCodes <- 404
-				}
+			It("Should not be a failure", func() {
+				codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 0}
+				failure, _ := computeState(codesToAnalyze)
+				Expect(failure).To(BeFalse())
 			})
 
-			It("Should emit a message when threshold reached", func() {
-				responseCodes := make(chan int)
-				messages := make(chan *Message)
-
-				go Analyze("should emit", responseCodes, messages)
-				go consumeMessages(messages)
-
-				for i := 1; i <= 4; i++ {
-					responseCodes <- 404
-				}
-
-				var receivedMessage *Message
-				Eventually(messages, 1*time.Second).Should(Receive(&receivedMessage))
-				Expect(receivedMessage.String()).To(ContainSubstring("false"))
+			It("Should not allow recovery", func() {
+				codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 0}
+				_, canRecover := computeState(codesToAnalyze)
+				Expect(canRecover).To(BeFalse())
 			})
 		})
 
-		Context("Given successes and errors", func() {
-			It("Should emit a message", func() {
-				responseCodes := make(chan int)
-				messages := make(chan *Message)
 
-				var receivedMessage *Message
-				go Eventually(messages).Should(Receive(&receivedMessage))
+		Context("Given all failures", func() {
 
-				go Analyze("fake_url", responseCodes, messages)
+			It("Should be a failure", func() {
+				codesToAnalyze := []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+				failure, _ := computeState(codesToAnalyze)
+				Expect(failure).To(BeTrue())
+			})
 
-				for i := 1; i <= 10; i++ {
-					responseCodes <- 200
-				}
-				for i := 1; i <= 10; i++ {
-					responseCodes <- 404
-				}
-
-				Expect(receivedMessage.String()).To(ContainSubstring("false"))
+			It("Should not allow recovery", func() {
+				codesToAnalyze := []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+				_, canRecover := computeState(codesToAnalyze)
+				Expect(canRecover).To(BeFalse())
 			})
 		})
 

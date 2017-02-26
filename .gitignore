@@ -1,2 +1,5 @@
+# Ignore IDE stuff
+.idea
+
 # Ignore compiled stuff
 *.exe

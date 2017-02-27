@@ -12,8 +12,8 @@ var _ = Describe("StateChangeMessage", func() {
 		var negativeMessage *StateChangeMessage
 
 		BeforeEach(func() {
-			positiveMessage = NewMessage("http://test.com", true, []int{1, 2, 3})
-			negativeMessage = NewMessage("http://test.com", false, []int{1, 2, 3})
+			positiveMessage = RecoveryMessage("http://test.com", []int{1, 2, 3})
+			negativeMessage = ErrorMessage("http://test.com", []int{1, 2, 3})
 		})
 
 		Context("With any message", func() {

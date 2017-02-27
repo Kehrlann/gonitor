@@ -19,16 +19,17 @@ func Analyze(url string, responseCodes <-chan int, messages chan<- *StateChangeM
 	for code := range responseCodes {
 		lastTenCodes.Value = code
 		lastTenCodes = lastTenCodes.Next()
-		codes := RingToIntSlice(lastTenCodes)
+
+		codes := RingToIntSlice(lastTenCodes) // slightly overkill, but nice for testing and printing
 
 		failure, recovery := computeState(codes)
 		if failure && !isDown {
 			isDown = true
-			messages <- NewMessage(url, false, codes)
+			messages <- ErrorMessage(url, codes)
 		} else if isDown && recovery {
 			// TODO : make recovery message
 			isDown = false
-			messages <- NewMessage(url, true, codes)
+			messages <- RecoveryMessage(url, codes)
 		}
 	}
 }

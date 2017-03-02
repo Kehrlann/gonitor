@@ -17,11 +17,11 @@ var _ = Describe("StateChangeMessage", func() {
 		})
 
 		Context("With any message", func() {
-			It("Should print the codes", func() {
+			It("Should print the Codes", func() {
 				Expect(positiveMessage.String()).To(ContainSubstring("[1 2 3]"))
 			})
 
-			It("Should print the url", func() {
+			It("Should print the Url", func() {
 				Expect(positiveMessage.String()).To(ContainSubstring("http://test.com"))
 			})
 		})

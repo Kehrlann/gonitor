@@ -13,6 +13,25 @@ var _ = Describe("Config", func() {
 		It("Should return the proper data structure", func() {
 			tempfile, _ := ioutil.TempFile("", "config.json")
 			defer os.Remove(tempfile.Name())
+			tempfile.WriteString(
+				`{
+						"resources" : 	[
+											{
+												"url" : 				"http://www.example.com",
+												"intervalInSeconds" : 	60,
+												"timeoutInSeconds" :	2,
+												"numberOfTries" :		10,
+												"failuteThreshold" :	3
+											},
+											{
+												"url" : 				"http://www.example.test",
+												"intervalInSeconds" : 	120,
+												"timeoutInSeconds" :	10,
+												"numberOfTries" :		10,
+												"failuteThreshold" :	10
+											}
+										]
+					}`)
 			tempfile.Close()
 
 			config, error := LoadConfig(tempfile.Name())

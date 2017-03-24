@@ -1,6 +1,11 @@
-# Ignore IDE stuff
+#################################
+# Ignore IDE stuff              #
+#################################
 .idea
 
-# Ignore compiled stuff
+#################################
+# Ignore compiled stuff         #
+#################################
 *.exe
+config.json
 debug.test

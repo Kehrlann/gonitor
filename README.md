@@ -9,6 +9,7 @@ It's a toy project to try out Go :)
 ## Ideas
 - [ ] Add parameter to load config from arbibtrary file
 - [ ] Add parameter to load config from inline
+- [ ] Add a "wizard" to configure a polling on first launch if no config.json found
 - [ ] Save return codes in database
 - [ ] Save alerts in database
 - [ ] Hot reload config

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"net"
 	"net/http"
 	"time"
 )
@@ -17,8 +19,13 @@ func Run(resource Resource, messages chan<- *StateChangeMessage) {
 }
 
 func fetch(url string, timeOutInSeconds int) int {
+	netTransport := &http.Transport{
+		Dial:                (&net.Dialer{Timeout: time.Duration(timeOutInSeconds) * time.Second}).Dial,
+		TLSHandshakeTimeout: time.Duration(timeOutInSeconds) * time.Second,
+	}
 	client := &http.Client{
-		Timeout: time.Duration(timeOutInSeconds) * time.Second,
+		Timeout:   time.Duration(timeOutInSeconds) * time.Second,
+		Transport: netTransport,
 	}
 
 	resp, err := client.Get(url)
@@ -26,5 +33,6 @@ func fetch(url string, timeOutInSeconds int) int {
 		return 0
 	}
 
+	defer resp.Body.Close()
 	return resp.StatusCode
 }

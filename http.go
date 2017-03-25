@@ -8,17 +8,17 @@ import (
 var timeout = 1 * time.Second
 
 // Run takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
-func Run(resource Resource, every time.Duration, messages chan<- *StateChangeMessage) {
+func Run(resource Resource, messages chan<- *StateChangeMessage) {
 	responseCodes := make(chan int)
 	go Analyze(resource, responseCodes, messages)
-	for range time.Tick(every) {
-		responseCodes <- fetch(resource.Url)
+	for range time.Tick(time.Duration(resource.IntervalInSeconds) * time.Second) {
+		responseCodes <- fetch(resource.Url, resource.TimeoutInSeconds)
 	}
 }
 
-func fetch(url string) int {
+func fetch(url string, timeOutInSeconds int) int {
 	client := &http.Client{
-		Timeout: timeout,
+		Timeout: time.Duration(timeOutInSeconds) * time.Second,
 	}
 
 	resp, err := client.Get(url)

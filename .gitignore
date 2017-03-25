@@ -7,5 +7,5 @@
 # Ignore compiled stuff         #
 #################################
 *.exe
-config.json
+gonitor.config.json
 debug.test

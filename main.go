@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	config, err := LoadConfig("./config.json")
+	config, err := LoadConfig("./gonitor.config.json")
 
 	if err != nil {
 		log.Fatal(err)

@@ -11,7 +11,7 @@ var _ = Describe("Config", func() {
 
 	Context("When loading a valid config from a file", func() {
 		It("Should return the proper data structure", func() {
-			tempfile, _ := ioutil.TempFile("", "config.json")
+			tempfile, _ := ioutil.TempFile("", "gonitor.config.json")
 			defer os.Remove(tempfile.Name())
 			tempfile.WriteString(
 				`{
@@ -52,7 +52,7 @@ var _ = Describe("Config", func() {
 
 	Context("When loading an invalid config from a file", func() {
 		It("Should throw an error", func() {
-			tempfile, _ := ioutil.TempFile("", "config.json")
+			tempfile, _ := ioutil.TempFile("", "gonitor.config.json")
 			defer os.Remove(tempfile.Name())
 			tempfile.WriteString("hello i am invalid !")
 			tempfile.Close()

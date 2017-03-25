@@ -7,12 +7,12 @@ import (
 
 var timeout = 1 * time.Second
 
-// Run does blah
-func Run(url string, every time.Duration, messages chan<- *StateChangeMessage) {
+// Run takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
+func Run(resource Resource, every time.Duration, messages chan<- *StateChangeMessage) {
 	responseCodes := make(chan int)
-	go Analyze(url, responseCodes, messages)
+	go Analyze(resource, responseCodes, messages)
 	for range time.Tick(every) {
-		responseCodes <- fetch(url)
+		responseCodes <- fetch(resource.Url)
 	}
 }
 

@@ -17,7 +17,8 @@ func main() {
 	fmt.Println(config)
 
 	messages := make(chan *StateChangeMessage)
-	go Run("https://ratp.garnier.wf", 2*time.Second, messages)
-	go Run("http://www.google.com", 2*time.Second, messages)
+	for _, resource := range config.Resources {
+		go Run(resource, 2*time.Second, messages)
+	}
 	EmitMessages(messages)
 }

@@ -14,12 +14,12 @@ var _ = Describe("Analyze", func() {
 			codesToAnalyze := []int{0}
 
 			It("Should not be a failure", func() {
-				failure, _ := computeState(codesToAnalyze)
+				failure, _ := computeState(codesToAnalyze, 3, 10)
 				Expect(failure).To(BeFalse())
 			})
 
 			It("Should not allow recovery", func() {
-				_, canRecover := computeState(codesToAnalyze)
+				_, canRecover := computeState(codesToAnalyze, 3, 10)
 				Expect(canRecover).To(BeFalse())
 			})
 		})
@@ -28,12 +28,12 @@ var _ = Describe("Analyze", func() {
 			codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 200}
 
 			It("Should not be a failure", func() {
-				failure, _ := computeState(codesToAnalyze)
+				failure, _ := computeState(codesToAnalyze, 3, 10)
 				Expect(failure).To(BeFalse())
 			})
 
 			It("Should allow recovery", func() {
-				_, canRecover := computeState(codesToAnalyze)
+				_, canRecover := computeState(codesToAnalyze, 3, len(codesToAnalyze))
 				Expect(canRecover).To(BeTrue())
 			})
 		})
@@ -42,12 +42,12 @@ var _ = Describe("Analyze", func() {
 
 			codesToAnalyze := []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 0}
 			It("Should not be a failure", func() {
-				failure, _ := computeState(codesToAnalyze)
+				failure, _ := computeState(codesToAnalyze, 3, 10)
 				Expect(failure).To(BeFalse())
 			})
 
 			It("Should not allow recovery", func() {
-				_, canRecover := computeState(codesToAnalyze)
+				_, canRecover := computeState(codesToAnalyze, 3, 10)
 				Expect(canRecover).To(BeFalse())
 			})
 		})
@@ -56,12 +56,12 @@ var _ = Describe("Analyze", func() {
 			codesToAnalyze := []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 			It("Should be a failure", func() {
-				failure, _ := computeState(codesToAnalyze)
+				failure, _ := computeState(codesToAnalyze, 3, 10)
 				Expect(failure).To(BeTrue())
 			})
 
 			It("Should not allow recovery", func() {
-				_, canRecover := computeState(codesToAnalyze)
+				_, canRecover := computeState(codesToAnalyze, 3, 10)
 				Expect(canRecover).To(BeFalse())
 			})
 		})
@@ -70,11 +70,13 @@ var _ = Describe("Analyze", func() {
 
 	Describe("Receiving HTTP response Codes", func() {
 
+		resource := Resource{"Url", 2, 2, 10, 3}
+
 		Context("When not polling", func() {
 			It("Should not emit messages", func() {
 				messages := make(chan *StateChangeMessage)
 				codes := make(chan int)
-				go Analyze("Url", codes, messages)
+				go Analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
 			})
 		})
@@ -92,7 +94,7 @@ var _ = Describe("Analyze", func() {
 				messages := make(chan *StateChangeMessage)
 				codes := make(chan int)
 				go emitHttpOk(codes)
-				go Analyze("Url", codes, messages)
+				go Analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
 			})
 		})
@@ -110,7 +112,7 @@ var _ = Describe("Analyze", func() {
 				messages := make(chan *StateChangeMessage)
 				codes := make(chan int)
 				go emitCodesFromSlice(codes, []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 0, 0, 0})
-				go Analyze("Url", codes, messages)
+				go Analyze(resource, codes, messages)
 
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
@@ -122,7 +124,7 @@ var _ = Describe("Analyze", func() {
 				messages := make(chan *StateChangeMessage)
 				codes := make(chan int)
 				go emitCodesFromSlice(codes, []int{0, 0, 0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200})
-				go Analyze("Url", codes, messages)
+				go Analyze(resource, codes, messages)
 
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))

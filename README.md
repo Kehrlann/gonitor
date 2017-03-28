@@ -17,7 +17,7 @@ It's a toy project to try out Go :)
 - [ ] HTML dashboard showing datapoints with d3js / websockets
 - [ ] Try out React + RxJS
 
-# Done !
+## Done !
 - [x] Poll websites
 - [x] Load config from JSON file
 - [x] Use config to spawn go-routines (use config.json in current path)

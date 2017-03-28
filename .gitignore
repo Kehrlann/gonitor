@@ -9,3 +9,4 @@
 *.exe
 gonitor.config.json
 debug.test
+*.prof

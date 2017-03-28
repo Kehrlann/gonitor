@@ -21,3 +21,19 @@ It's a toy project to try out Go :)
 - [x] Poll websites
 - [x] Load config from JSON file
 - [x] Use config to spawn go-routines (use config.json in current path)
+
+## Profiling :
+28/03/2017 : there seems to be a very small memory leak ... Hard to pin down.
+
+In main.go, do :
+```go
+    import _ "net/http/pprof"
+    [...]
+	go http.ListenAndServe(":8080", http.DefaultServeMux)
+    [...]
+```
+
+And then, from the command line, in the folder :
+```sh
+    go tool pprof gonitor http://localhost:8080/debug/pprof/heap
+```

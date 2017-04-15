@@ -7,16 +7,25 @@ import (
 
 // Config is the application config
 type Config struct {
+	Smtp      Smtp
 	Resources []Resource
+}
+
+type Smtp struct {
+	Address  string
+	Username string
+	Password string
+	From     string
+	To       []string
 }
 
 // Resource represents an Url to be watched, and all the necessary config/timing parameters
 type Resource struct {
-	Url               string `json:"url"`               // the Url to watch
-	IntervalInSeconds int    `json:"intervalInSeconds"` // the interval at which to poll the resource. Defaults to 60s.
-	TimeoutInSeconds  int    `json:"timeoutInSeconds"`  // the timeout in seconds. Defaults to 2s.
-	NumberOfTries     int    `json:"numberOfTries"`     // number of attempts at getting the resource. Defaults to 10.
-	FailureThreshold  int    `json:"failureThreshold"`  // the number of failures within the tries that would raise an alarm. Defaults to 5.
+	Url               string // the Url to watch
+	IntervalInSeconds int    // the interval at which to poll the resource. Defaults to 60s.
+	TimeoutInSeconds  int    // the timeout in seconds. Defaults to 2s.
+	NumberOfTries     int    // number of attempts at getting the resource. Defaults to 10.
+	FailureThreshold  int    // the number of failures within the tries that would raise an alarm. Defaults to 5.
 }
 
 // LoadConfig loads a config from a JSON file

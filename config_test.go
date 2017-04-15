@@ -10,32 +10,32 @@ import (
 var _ = Describe("Config", func() {
 
 	Context("When loading a valid config from a file", func() {
-		It("Should return the proper data structure", func() {
-			tempfile, _ := ioutil.TempFile("", "gonitor.config.json")
-			defer os.Remove(tempfile.Name())
-			tempfile.WriteString(
-				`{
-						"resources" : 	[
-											{
-												"url" : 				"http://www.example.com",
-												"intervalInSeconds" : 	60,
-												"timeoutInSeconds" :	2,
-												"numberOfTries" :		10,
-												"failureThreshold" :	3
-											},
-											{
-												"url" : 				"http://www.example.test",
-												"intervalInSeconds" : 	120,
-												"timeoutInSeconds" :	10,
-												"numberOfTries" :		10,
-												"failureThreshold" :	10
-											}
-										]
-					}`)
-			tempfile.Close()
+		It("Should return the proper resources", func() {
+			// Arrange
+			tempFile := createConfigFile(`{
+				"resources" : 	[
+									{
+										"url" : 				"http://www.example.com",
+										"intervalInSeconds" : 	60,
+										"timeoutInSeconds" :	2,
+										"numberOfTries" :		10,
+										"failureThreshold" :	3
+									},
+									{
+										"url" : 				"http://www.example.test",
+										"intervalInSeconds" : 	120,
+										"timeoutInSeconds" :	10,
+										"numberOfTries" :		10,
+										"failureThreshold" :	10
+									}
+								]
+			}`)
+			defer os.Remove(tempFile.Name())
 
-			config, err := LoadConfig(tempfile.Name())
+			// Act
+			config, err := LoadConfig(tempFile.Name())
 
+			// Assert
 			Expect(err).To(BeNil())
 			Expect(config).ToNot(BeNil())
 			Expect(len(config.Resources)).To(Equal(2))
@@ -47,6 +47,34 @@ var _ = Describe("Config", func() {
 			second := config.Resources[1]
 			resource = Resource{"http://www.example.test", 120, 10, 10, 10}
 			Expect(second).To(Equal(resource))
+		})
+
+		It("Should load the SMTP config when it exists", func() {
+			tempFile := createConfigFile(`{
+				"smtp" :	{
+								"address" 	: "address@example.com",
+								"username" 	: "user",
+								"password" 	: "password123",
+								"from" 		: "address@example.com",
+								"to" 		: ["recipient@example.com", "admin@example.com"]
+							}
+			}`)
+			defer os.Remove(tempFile.Name())
+
+			// Act
+			config, err := LoadConfig(tempFile.Name())
+
+			// Assert
+			Expect(err).To(BeNil())
+			Expect(config).ToNot(BeNil())
+
+			smtp := config.Smtp
+			Expect(smtp.Address).To(Equal("address@example.com"))
+			Expect(smtp.From).To(Equal("address@example.com"))
+			Expect(smtp.Username).To(Equal("user"))
+			Expect(smtp.Password).To(Equal("password123"))
+			Expect(smtp.To).To(ConsistOf("recipient@example.com", "admin@example.com"))
+
 		})
 	})
 
@@ -73,3 +101,10 @@ var _ = Describe("Config", func() {
 		})
 	})
 })
+
+func createConfigFile(config string) *os.File {
+	tempfile, _ := ioutil.TempFile("", "gonitor.config.json")
+	tempfile.WriteString(config)
+	tempfile.Close()
+	return tempfile
+}

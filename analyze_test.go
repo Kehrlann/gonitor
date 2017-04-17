@@ -117,7 +117,7 @@ var _ = Describe("Analyze", func() {
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
-				Expect(receivedMessage.Url).To(Equal("Url"))
+				Expect(receivedMessage.Resource.Url).To(Equal("Url"))
 			})
 
 			It("Should emit a recovery message when recovering", func() {
@@ -129,7 +129,7 @@ var _ = Describe("Analyze", func() {
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
-				Expect(receivedMessage.Url).To(Equal("Url"))
+				Expect(receivedMessage.Resource.Url).To(Equal("Url"))
 
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeTrue())

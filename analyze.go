@@ -24,10 +24,10 @@ func Analyze(resource Resource, responseCodes <-chan int, messages chan<- *State
 			firstAlertThreshold--
 		} else if failure && !isDown {
 			isDown = true
-			messages <- ErrorMessage(resource.Url, codes)
+			messages <- ErrorMessage(resource, codes)
 		} else if isDown && recovery {
 			isDown = false
-			messages <- RecoveryMessage(resource.Url, codes)
+			messages <- RecoveryMessage(resource, codes)
 		}
 	}
 }

@@ -12,7 +12,8 @@ type Config struct {
 }
 
 type Smtp struct {
-	Address  string
+	Host     string
+	Port     int
 	Username string
 	Password string
 	From     string

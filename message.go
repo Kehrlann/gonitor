@@ -28,9 +28,9 @@ func (m *StateChangeMessage) MailSubject() string {
 }
 
 func (m *StateChangeMessage) MailBody() string {
-	error_recovery := "It seems an error occurred when polling <strong style=\"color:#d9534f\">{{.Resource.Url}}</strong>.<br>"
+	error_recovery := "It seems <strong style=\"color:#d9534f\">an error</strong> occurred when polling <strong style=\"color:#d9534f\">{{.Resource.Url}}</strong>.<br>"
 	if m.IsOk {
-		error_recovery = "It seems <strong style=\"color:#5cb85c\">{{.Resource.Url}}</strong> has recovered.<br>"
+		error_recovery = "It seems <strong style=\"color:#5cb85c\">{{.Resource.Url}}</strong> <strong style=\"color:#5cb85c\">has recovered</strong>.<br>"
 	}
 	template_string := "Hi !<br><br>" +
 			"" +
@@ -61,11 +61,4 @@ func ErrorMessage(resource Resource, codes []int) *StateChangeMessage {
 func RecoveryMessage(resource Resource, codes []int) *StateChangeMessage {
 	m := &StateChangeMessage{resource, true, codes, time.Now()}
 	return m
-}
-
-// EmitMessages blah blah
-func EmitMessages(messages <-chan *StateChangeMessage) {
-	for m := range messages {
-		fmt.Println(m)
-	}
 }

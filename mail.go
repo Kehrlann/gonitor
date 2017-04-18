@@ -2,12 +2,13 @@ package main
 
 import (
 	"gopkg.in/gomail.v2"
+	"fmt"
 )
 
-func SendMail(smtp *Smtp, message StateChangeMessage) {
+func SendMail(smtp *Smtp, message *StateChangeMessage) {
 	// prepare
 	m := gomail.NewMessage()
-	m.SetHeader("From", smtp.From)
+	m.SetHeader("From", fmt.Sprintf("%v <%v>", smtp.FromName, smtp.FromAddress))
 	m.SetHeader("To", smtp.To...)
 	m.SetHeader("Subject", message.MailSubject())
 	m.SetBody("text/html", message.MailBody())

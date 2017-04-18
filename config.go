@@ -12,12 +12,13 @@ type Config struct {
 }
 
 type Smtp struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-	From     string
-	To       []string
+	Host        string
+	Port        int
+	Username    string
+	Password    string
+	FromAddress string
+	FromName    string
+	To          []string
 }
 
 // Resource represents an Url to be watched, and all the necessary config/timing parameters

@@ -52,12 +52,13 @@ var _ = Describe("Config", func() {
 		It("Should load the SMTP config when it exists", func() {
 			tempFile := createConfigFile(`{
 				"smtp" :	{
-								"host" 		: "smtp.example.com",
-								"port"		: 25,
-								"username" 	: "user",
-								"password" 	: "password123",
-								"from" 		: "address@example.com",
-								"to" 		: ["recipient@example.com", "admin@example.com"]
+								"host" 			: "smtp.example.com",
+								"port"			: 25,
+								"username" 		: "user",
+								"password" 		: "password123",
+								"fromaddress" 	: "address@example.com",
+								"fromname" 		: "Mr Example",
+								"to" 			: ["recipient@example.com", "admin@example.com"]
 							}
 			}`)
 			defer os.Remove(tempFile.Name())
@@ -72,7 +73,8 @@ var _ = Describe("Config", func() {
 			smtp := config.Smtp
 			Expect(smtp.Host).To(Equal("smtp.example.com"))
 			Expect(smtp.Port).To(Equal(25))
-			Expect(smtp.From).To(Equal("address@example.com"))
+			Expect(smtp.FromAddress).To(Equal("address@example.com"))
+			Expect(smtp.FromName).To(Equal("Mr Example"))
 			Expect(smtp.Username).To(Equal("user"))
 			Expect(smtp.Password).To(Equal("password123"))
 			Expect(smtp.To).To(ConsistOf("recipient@example.com", "admin@example.com"))

@@ -68,7 +68,7 @@ var _ = Describe("StateChangeMessage : ", func() {
 							"Hi !<br><br>" +
 								"" +
 								"This is an automated message from Gonitor.<br>" +
-								"It seems <strong style=\"color:#5cb85c\">http://test.com</strong> has recovered.<br>" +
+								"It seems <strong style=\"color:#5cb85c\">http://test.com</strong> <strong style=\"color:#5cb85c\">has recovered</strong>.<br>" +
 								"The following HTTP codes were received : [1 2 3].<br><br>" +
 								"The config used is :" +
 								"<ul>" +
@@ -88,7 +88,7 @@ var _ = Describe("StateChangeMessage : ", func() {
 							"Hi !<br><br>" +
 								"" +
 								"This is an automated message from Gonitor.<br>" +
-								"It seems an error occurred when polling <strong style=\"color:#d9534f\">http://test.com</strong>.<br>" +
+								"It seems <strong style=\"color:#d9534f\">an error</strong> occurred when polling <strong style=\"color:#d9534f\">http://test.com</strong>.<br>" +
 								"The following HTTP codes were received : [1 2 3].<br><br>" +
 								"The config used is :" +
 								"<ul>" +

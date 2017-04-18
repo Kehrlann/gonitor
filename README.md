@@ -4,7 +4,7 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next :
-- [ ] Emit alerts via e-mail
+- [ ] Add logging : messages, errors ...
 
 ## Ideas
 - [ ] Add parameter to load config from arbibtrary file
@@ -20,6 +20,7 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS
 
 ## Done !
+- [x] Emit alerts via e-mail
 - [x] Poll websites
 - [x] Load config from JSON file
 - [x] Use config to spawn go-routines (use config.json in current path)

@@ -49,11 +49,20 @@ func LoadConfig(path string) (*Config, error) {
 	return ret, nil
 }
 
+// IsValid tells you whether you can trust this Smtp config to send an e-mail
+func (smtp *Smtp) IsValid() bool{
+	return smtp.Host != "" && smtp.Port != 0 && len(smtp.To) > 0 && smtp.FromAddress != ""
+}
+
 // LogConfig logs the config at the info level
 func (config *Config) LogConfig() {
+	smtp_validity := "valid"
+	if !config.Smtp.IsValid(){
+		smtp_validity = "INVALID"
+	}
 	log.Info()
 	log.Info("Config is :")
-	log.Info(".. SMTP :")
+	log.Infof(".. SMTP (%v) :", smtp_validity)
 	log.Infof(".... 	Host         :    %v", config.Smtp.Host        )
 	log.Infof(".... 	Port         :    %v", config.Smtp.Port        )
 	log.Infof(".... 	Username     :    %v", config.Smtp.Username    )

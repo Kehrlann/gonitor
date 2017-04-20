@@ -3,9 +3,14 @@ package main
 import (
 	"gopkg.in/gomail.v2"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 )
 
 func SendMail(smtp *Smtp, message *StateChangeMessage) {
+	if !smtp.IsValid() {
+		return
+	}
+
 	// prepare
 	m := gomail.NewMessage()
 	m.SetHeader("From", fmt.Sprintf("%v <%v>", smtp.FromName, smtp.FromAddress))
@@ -18,7 +23,6 @@ func SendMail(smtp *Smtp, message *StateChangeMessage) {
 
 	// send & auto-close
 	if err := d.DialAndSend(m); err != nil {
-		// TODO : LOG ERROR
+		log.Errorf("Error sending e-mail alert : `%v`", err)
 	}
 }
-

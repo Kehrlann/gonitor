@@ -4,9 +4,10 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next :
-- [ ] Add logging : messages, errors ...
+??
 
 ## Ideas
+- [ ] Configure log level
 - [ ] Add parameter to load config from arbibtrary file
 - [ ] Add parameter to load config from inline
 - [ ] Generate an example config file on startup
@@ -20,10 +21,13 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS
 
 ## Done !
+- [x] Don't send an e-mail if SMTP is not configured properly
 - [x] Emit alerts via e-mail
 - [x] Poll websites
 - [x] Load config from JSON file
 - [x] Use config to spawn go-routines (use config.json in current path)
+- [x] Add logging : messages, errors ...
+- [x] Add a welcome message on startup
 
 ## Profiling :
 28/03/2017 : there seems to be a very small memory leak ... Hard to pin down.

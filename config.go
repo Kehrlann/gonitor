@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
+	log "github.com/Sirupsen/logrus"
 )
 
 // Config is the application config
@@ -32,6 +33,7 @@ type Resource struct {
 
 // LoadConfig loads a config from a JSON file
 func LoadConfig(path string) (*Config, error) {
+	log.Infof("Loading config from `%v` ...", path)
 	file, err := ioutil.ReadFile(path)
 
 	if err != nil {
@@ -42,6 +44,31 @@ func LoadConfig(path string) (*Config, error) {
 	if err := json.Unmarshal(file, ret); err != nil {
 		return nil, err
 	}
-
+	log.Info("Config loaded !")
+	ret.LogConfig()
 	return ret, nil
+}
+
+// LogConfig logs the config at the info level
+func (config *Config) LogConfig() {
+	log.Info()
+	log.Info("Config is :")
+	log.Info(".. SMTP :")
+	log.Infof(".... 	Host         :    %v", config.Smtp.Host        )
+	log.Infof(".... 	Port         :    %v", config.Smtp.Port        )
+	log.Infof(".... 	Username     :    %v", config.Smtp.Username    )
+	log.Info (".... 	Password     :    *** redacted ***")
+	log.Infof(".... 	FromAddress  :    %v", config.Smtp.FromAddress )
+	log.Infof(".... 	FromName     :    %v", config.Smtp.FromName    )
+	log.Infof(".... 	To           :    %v", config.Smtp.To          )
+
+	for i, resource := range config.Resources {
+		log.Infof(".. Resource #%v :", i + 1)
+		log.Infof(".... 	Url               	:    %v", resource.Url                       )
+		log.Infof(".... 	IntervalInSeconds 	:    %v", resource.IntervalInSeconds         )
+		log.Infof(".... 	TimeoutInSeconds  	:    %v", resource.TimeoutInSeconds          )
+		log.Infof(".... 	NumberOfTries     	:    %v", resource.NumberOfTries             )
+		log.Infof(".... 	FailureThreshold  	:    %v", resource.FailureThreshold          )
+	}
+	log.Info()
 }

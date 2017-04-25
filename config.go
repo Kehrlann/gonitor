@@ -60,6 +60,7 @@ func (config *Config) LogConfig() {
 	if !config.Smtp.IsValid(){
 		smtp_validity = "INVALID"
 	}
+
 	log.Info()
 	log.Info("Config is :")
 	log.Infof(".. SMTP (%v) :", smtp_validity)

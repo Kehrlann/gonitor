@@ -2,12 +2,26 @@ package main
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"flag"
+	"fmt"
 )
 
 func main() {
+	// TODO : rework, test
+	flag.Usage = func() {
+		fmt.Println()
+		fmt.Println("Usage: gonitor [-config path_to_config]")
+		fmt.Println()
+		flag.PrintDefaults()
+	}
+	path := flag.String("config", "./gonitor.config.json", "Path to the config file")
+	flag.Parse()
+
+
+
 	log.SetLevel(log.DebugLevel)
 	log.Info("Starting Gonitor ...")
-	config, err := LoadConfig("./gonitor.config.json")
+	config, err := LoadConfig(*path)
 
 	if err != nil {
 		log.Fatalf("Error loading config : `%v`", err)

@@ -3,14 +3,14 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 
 It's a toy project to try out Go :)
 
-## Todo next :
-??
+## Todo next
+- [ ] Add parameter to load config from arbibtrary file
 
 ## Ideas
+- [ ] Mock HTTP and SMTP for tests ?
 - [ ] Configure log level
-- [ ] Add parameter to load config from arbibtrary file
-- [ ] Add parameter to load config from inline
 - [ ] Generate an example config file on startup
+- [ ] Allow running external scripts
 - [ ] Per-resource recipient-list
 - [ ] Add a "wizard" to configure a polling on first launch if no config.json found
 - [ ] Save return codes in database

@@ -4,12 +4,16 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Add parameter to load config from arbibtrary file
+- [ ] Generate an example config file on startup : make special error in config.go 
+    - throw it when gonitor.config.json not found 
+    - handle file creation with sane defaults 
+    - print warning message, saying 'oh we created this file for you'
+    - what about when file creation is disabled ? should just print the file structure ?
 
 ## Ideas
 - [ ] Mock HTTP and SMTP for tests ?
+- [ ] Test main.go -> emit, config file ...
 - [ ] Configure log level
-- [ ] Generate an example config file on startup
 - [ ] Allow running external scripts
 - [ ] Per-resource recipient-list
 - [ ] Add a "wizard" to configure a polling on first launch if no config.json found
@@ -21,6 +25,7 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS
 
 ## Done !
+- [x] Add parameter to load config from arbibtrary file
 - [x] Don't send an e-mail if SMTP is not configured properly
 - [x] Emit alerts via e-mail
 - [x] Poll websites

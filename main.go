@@ -8,16 +8,9 @@ import (
 
 func main() {
 	// TODO : rework, test
-	flag.Usage = func() {
-		fmt.Println()
-		fmt.Println("Usage: gonitor [-config path_to_config]")
-		fmt.Println()
-		flag.PrintDefaults()
-	}
+	flag.Usage = printUsage
 	path := flag.String("config", "./gonitor.config.json", "Path to the config file")
 	flag.Parse()
-
-
 
 	log.SetLevel(log.DebugLevel)
 	log.Info("Starting Gonitor ...")
@@ -32,13 +25,20 @@ func main() {
 	for _, resource := range config.Resources {
 		go Run(resource, messages)
 	}
-	EmitMessages(messages, &config.Smtp)
+	emitMessages(messages, &config.Smtp)
 }
 
-// EmitMessages blah blah
-func EmitMessages(messages <-chan *StateChangeMessage, smtp *Smtp) {
+func emitMessages(messages <-chan *StateChangeMessage, smtp *Smtp) {
 	for m := range messages {
 		log.Info(m)
 		go SendMail(smtp, m)
 	}
+}
+
+func printUsage() {
+	fmt.Println("Gonitor is a website monitoring tool.")
+	fmt.Println()
+	fmt.Println("Usage: gonitor [-config path_to_config]")
+	fmt.Println()
+	flag.PrintDefaults()
 }

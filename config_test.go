@@ -5,10 +5,11 @@ import (
 	. "github.com/onsi/gomega"
 	"io/ioutil"
 	"os"
+	log "github.com/Sirupsen/logrus"
 )
 
 var _ = Describe("Config : ", func() {
-
+	log.SetLevel(log.PanicLevel)
 	Describe("LoadConfig : ", func() {
 		Context("When loading a valid config from a file", func() {
 			It("Should return the proper resources", func() {

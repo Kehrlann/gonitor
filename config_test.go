@@ -106,6 +106,19 @@ var _ = Describe("Config : ", func() {
 				Expect(config).To(BeNil())
 			})
 		})
+
+		Context("When trying to load a default config that doesn't exist", func() {
+			It("Should throw a NoDefaultConfigError", func() {
+				temp := DEFAULT_CONFIG_PATH
+				DEFAULT_CONFIG_PATH := "i_am_not_a_file.json"
+				defer func() { DEFAULT_CONFIG_PATH = temp }()
+
+				_, err := LoadConfig(DEFAULT_CONFIG_PATH)
+
+				Expect(err).ToNot(BeNil())
+				Expect(err.Error()).ToNot(BeNil())
+			})
+		})
 	})
 
 	Describe("Smtp.IsValid : ", func() {
@@ -122,28 +135,37 @@ var _ = Describe("Config : ", func() {
 			Expect(smtp.IsValid()).To(BeTrue())
 		})
 
-		It("Should be invalid without a from address", func(){
-			no_address  := *smtp
+		It("Should be invalid without a from address", func() {
+			no_address := *smtp
 			no_address.FromAddress = ""
 			Expect(no_address.IsValid()).To(BeFalse())
 		})
 
-		It("Should be invalid without a to address", func(){
+		It("Should be invalid without a to address", func() {
 			no_recipient := *smtp
 			no_recipient.To = []string{}
 			Expect(no_recipient.IsValid()).To(BeFalse())
 		})
 
-		It("Should be invalid without a host", func(){
+		It("Should be invalid without a host", func() {
 			no_host := *smtp
 			no_host.Host = ""
 			Expect(no_host.IsValid()).To(BeFalse())
 		})
 
-		It("Should be invalid without a port", func(){
+		It("Should be invalid without a port", func() {
 			no_port := *smtp
 			no_port.Port = 0
 			Expect(no_port.IsValid()).To(BeFalse())
+		})
+	})
+
+	Describe("NoDefaultConfigError : ", func() {
+		It("Should be an error type with the correct message", func() {
+			err := NewDefaultConfigError()
+
+			Expect(err.Error()).To(Equal("No default config found at ./gonitor.config.json"))
+			Expect(err.HelpMessage).To(ContainSubstring(DEFAULT_CONFIG_PATH))
 		})
 	})
 })

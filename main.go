@@ -4,12 +4,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
-	// TODO : rework, test
 	flag.Usage = printUsage
-	path := flag.String("config", "./gonitor.config.json", "Path to the config file")
+	path := flag.String("config", DEFAULT_CONFIG_PATH, "Path to the config file")
 	flag.Parse()
 
 	log.SetLevel(log.DebugLevel)
@@ -17,7 +17,14 @@ func main() {
 	config, err := LoadConfig(*path)
 
 	if err != nil {
-		log.Fatalf("Error loading config : `%v`", err)
+		switch err := err.(type) {
+		default:
+			log.Fatalf("Error loading config : `%v`", err)
+			break
+		case *NoDefaultConfigError:
+			fmt.Println(err.HelpMessage)
+			os.Exit(1)
+		}
 	}
 
 	log.Info("Starting monitoring ...")

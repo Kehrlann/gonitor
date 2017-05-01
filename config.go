@@ -11,8 +11,9 @@ var DEFAULT_CONFIG_PATH string = "./gonitor.config.json"
 
 // Config is the application config
 type Config struct {
-	Smtp      Smtp
-	Resources []Resource
+	Smtp          Smtp
+	GlobalCommand string
+	Resources     []Resource
 }
 
 type Smtp struct {
@@ -32,6 +33,7 @@ type Resource struct {
 	TimeoutInSeconds  int    // the timeout in seconds. Defaults to 2s.
 	NumberOfTries     int    // number of attempts at getting the resource. Defaults to 10.
 	FailureThreshold  int    // the number of failures within the tries that would raise an alarm. Defaults to 5.
+	Command           string // command to run whenever there is a failure or recovery message
 }
 
 // NoDefaultConfigError represents an error thrown when the user hasn't specified a config, and that config wasn't found
@@ -44,8 +46,8 @@ func (n NoDefaultConfigError) Error() string {
 	return fmt.Sprintf("No default config found at %v", DEFAULT_CONFIG_PATH)
 }
 
-func NewDefaultConfigError() *NoDefaultConfigError{
-	return &NoDefaultConfigError{HelpMessage:fmt.Sprintf(`
+func NewDefaultConfigError() *NoDefaultConfigError {
+	return &NoDefaultConfigError{HelpMessage: fmt.Sprintf(`
 It seems you didn't specify a config file. Gonitor attempted to load a default config file, located at  :
 	%v
 

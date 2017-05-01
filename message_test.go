@@ -11,7 +11,7 @@ var _ = Describe("StateChangeMessage : ", func() {
 	var negativeMessage *StateChangeMessage
 
 	BeforeEach(func() {
-		res := Resource{"http://test.com", 60, 2, 10, 3 }
+		res := Resource{"http://test.com", 60, 2, 10, 3, "" }
 		positiveMessage = RecoveryMessage(res, []int{1, 2, 3})
 		negativeMessage = ErrorMessage(res, []int{1, 2, 3})
 	})

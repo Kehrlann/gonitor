@@ -70,7 +70,7 @@ var _ = Describe("Analyze", func() {
 
 	Describe("Receiving HTTP response Codes", func() {
 
-		resource := Resource{"Url", 2, 2, 10, 3}
+		resource := Resource{"Url", 2, 2, 10, 3, ""}
 
 		Context("When not polling", func() {
 			It("Should not emit messages", func() {

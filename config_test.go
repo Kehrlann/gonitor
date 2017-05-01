@@ -21,14 +21,16 @@ var _ = Describe("Config : ", func() {
 										"intervalInSeconds" : 	60,
 										"timeoutInSeconds" :	2,
 										"numberOfTries" :		10,
-										"failureThreshold" :	3
+										"failureThreshold" :	3,
+										"command" :				"foobar"
 									},
 									{
 										"url" : 				"http://www.example.test",
 										"intervalInSeconds" : 	120,
 										"timeoutInSeconds" :	10,
 										"numberOfTries" :		10,
-										"failureThreshold" :	10
+										"failureThreshold" :	10,
+										"command" :				null
 									}
 								]
 			}`)
@@ -43,11 +45,11 @@ var _ = Describe("Config : ", func() {
 				Expect(len(config.Resources)).To(Equal(2))
 
 				first := config.Resources[0]
-				resource := Resource{"http://www.example.com", 60, 2, 10, 3}
+				resource := Resource{"http://www.example.com", 60, 2, 10, 3, "foobar"}
 				Expect(first).To(Equal(resource))
 
 				second := config.Resources[1]
-				resource = Resource{"http://www.example.test", 120, 10, 10, 10}
+				resource = Resource{"http://www.example.test", 120, 10, 10, 10, ""}
 				Expect(second).To(Equal(resource))
 			})
 
@@ -81,6 +83,37 @@ var _ = Describe("Config : ", func() {
 				Expect(smtp.Password).To(Equal("password123"))
 				Expect(smtp.To).To(ConsistOf("recipient@example.com", "admin@example.com"))
 
+			})
+
+			It("Should return the global command when set", func() {
+				tempFile := createConfigFile(`{"globalCommand" : "hello.sh"}`)
+				defer os.Remove(tempFile.Name())
+
+				// Act
+				config, err := LoadConfig(tempFile.Name())
+
+				// Assert
+				Expect(err).To(BeNil())
+				Expect(config.GlobalCommand).To(Equal("hello.sh"))
+			})
+
+			It("Should have an empty string as global command when null or not set", func() {
+				// Arrange
+				notSetFile := createConfigFile(`{}`)
+				nullFile := createConfigFile(`{ "globalCommand" : null }`)
+				defer os.Remove(nullFile.Name())
+				defer os.Remove(notSetFile.Name())
+
+				// Act
+				configNotSet, err := LoadConfig(notSetFile.Name())
+				configNull, err2 := LoadConfig(nullFile.Name())
+
+				// Assert
+				Expect(err).To(BeNil())
+				Expect(configNotSet.GlobalCommand).To(BeEmpty())
+
+				Expect(err2).To(BeNil())
+				Expect(configNull.GlobalCommand).To(BeEmpty())
 			})
 		})
 

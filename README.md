@@ -16,6 +16,7 @@ It's a toy project to try out Go :)
 - [ ] Allow running external scripts
 - [ ] Per-resource recipient-list
 - [ ] Hot reload config
+- [ ] Print datetime in e-mail
 
 ### Features : visualisation tool
 - [ ] Save return codes in database

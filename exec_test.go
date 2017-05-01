@@ -3,6 +3,7 @@ package main
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"runtime"
 )
 
 var _ = Describe("exec : ", func() {
@@ -17,10 +18,12 @@ var _ = Describe("exec : ", func() {
 		})
 
 		It("Should run the global command if defined", func() {
-			// TODO : how to test this
-			ret := ExecCommand("echo", message)
-
-			Expect(ret.String()).To(Equal("coucou"))
+			// TODO : fix me :)
+			// Note : don't run on windows because 'echo' is weird on that platform
+			if runtime.GOOS != "windows" {
+				ret := ExecCommand("echo", message)
+				Expect(ret.String()).To(Equal("coucou"))
+			}
 		})
 	})
 })

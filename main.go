@@ -32,13 +32,14 @@ func main() {
 	for _, resource := range config.Resources {
 		go Run(resource, messages)
 	}
-	emitMessages(messages, &config.Smtp)
+	emitMessages(messages, &config.Smtp, config.GlobalCommand)
 }
 
-func emitMessages(messages <-chan *StateChangeMessage, smtp *Smtp) {
+func emitMessages(messages <-chan *StateChangeMessage, smtp *Smtp, globalCommand string) {
 	for m := range messages {
 		log.Info(m)
 		go SendMail(smtp, m)
+		go ExecCommand(m, globalCommand)
 	}
 }
 

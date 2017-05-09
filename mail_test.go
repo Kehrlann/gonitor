@@ -5,6 +5,9 @@ import (
 	. "github.com/onsi/gomega"
 
 	"gopkg.in/gomail.v2"
+	"errors"
+	testlog "github.com/Sirupsen/logrus/hooks/test"
+	log "github.com/Sirupsen/logrus"
 )
 
 type FakeMailer struct {
@@ -57,23 +60,21 @@ var _ = Describe("sendMail -> ", func() {
 			Expect(len(mailer.messages)).To(Equal(1))
 			// mmmmh can't verify the struct ¬.¬
 		})
-		//
-		//It("Should log when something goes wrong", func() {
-		//	hook := new(log.Hook)
-		//	log.AddHook(hook)
-		//	logger := log.New()
-		//	logger.Out = ioutil.Discard
-		//
-		//
-		//	mailer = &FakeMailer{
-		//		make([]*gomail.Message, 0),
-		//		func(m *gomail.Message) error { return errors.New("Woops") },
-		//	}
-		//
-		//	sendMail(mailer, smtp, message)
-		//
-		//	Expect(&hook.)
-		//})
+
+		It("Should log when something goes wrong", func() {
+			hook := testlog.NewGlobal()
+			log.SetLevel(log.ErrorLevel)
+
+			mailer = &FakeMailer{
+				make([]*gomail.Message, 0),
+				func(m *gomail.Message) error { return errors.New("Woops") },
+			}
+
+			sendMail(mailer, smtp, message)
+
+			Expect(hook.Entries).ToNot(BeEmpty())
+			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
+		})
 	})
 
 })

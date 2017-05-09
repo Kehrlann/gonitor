@@ -1,10 +1,11 @@
 package main
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"flag"
 	"fmt"
 	"os"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 func main() {

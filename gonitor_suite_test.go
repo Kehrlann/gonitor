@@ -1,10 +1,10 @@
 package main
 
 import (
+	"testing"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	"testing"
 )
 
 func TestGonitor(t *testing.T) {

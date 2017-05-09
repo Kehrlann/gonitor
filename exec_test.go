@@ -1,9 +1,10 @@
 package main
 
 import (
+	"runtime"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"runtime"
 )
 
 var _ = Describe("exec : ", func() {

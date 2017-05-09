@@ -1,10 +1,12 @@
 package main
 
 import (
+	"net/http"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+
 	"gopkg.in/jarcoal/httpmock.v1"
-	"net/http"
 )
 
 var _ = Describe("Http", func() {

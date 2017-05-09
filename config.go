@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	log "github.com/Sirupsen/logrus"
 	"fmt"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 var DEFAULT_CONFIG_PATH string = "./gonitor.config.json"

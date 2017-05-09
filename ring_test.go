@@ -1,9 +1,10 @@
 package main
 
 import (
+	"container/ring"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"container/ring"
 )
 
 var _ = Describe("Ring", func() {

@@ -1,9 +1,11 @@
 package main
 
 import (
-	"gopkg.in/gomail.v2"
 	"fmt"
+
 	log "github.com/Sirupsen/logrus"
+	
+	"gopkg.in/gomail.v2"
 )
 
 func SendMail(smtp *Smtp, message *StateChangeMessage) {

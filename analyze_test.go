@@ -71,7 +71,7 @@ var _ = Describe("Analyze", func() {
 
 	Describe("Receiving HTTP response Codes", func() {
 
-		resource := Resource{"Url", 2, 2, 10, 3, ""}
+		resource := Resource{"Url", 2, 2, 3, 2, ""}
 
 		Context("When not polling", func() {
 			It("Should not emit messages", func() {
@@ -86,7 +86,7 @@ var _ = Describe("Analyze", func() {
 
 			emitHttpOk := func(codes chan<- int) {
 				for range time.Tick(2 * time.Millisecond) {
-					// TODO : emit random Codes between 200 and 300 (HTTP 2xx)
+					// TODO : emit random Codes between 200 and 300 (HTTP 2xx) ?
 					codes <- 200
 				}
 			}
@@ -109,32 +109,42 @@ var _ = Describe("Analyze", func() {
 				}
 			}
 
+			var messages chan *StateChangeMessage
+			var codes chan int
+			BeforeEach(func () {
+				messages = make(chan *StateChangeMessage)
+				codes = make(chan int)
+			})
+
 			It("Should emit failure message", func() {
-				messages := make(chan *StateChangeMessage)
-				codes := make(chan int)
-				go emitCodesFromSlice(codes, []int{200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 0, 0, 0})
+				go emitCodesFromSlice(codes, []int{200, 0, 0})
 				go Analyze(resource, codes, messages)
 
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
-				Expect(receivedMessage.Resource.Url).To(Equal("Url"))
 			})
 
 			It("Should emit a recovery message when recovering", func() {
-				messages := make(chan *StateChangeMessage)
-				codes := make(chan int)
-				go emitCodesFromSlice(codes, []int{0, 0, 0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200})
+				go emitCodesFromSlice(codes, []int{0, 0, 200, 200, 200})
 				go Analyze(resource, codes, messages)
 
 				var receivedMessage *StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
-				Expect(receivedMessage.Resource.Url).To(Equal("Url"))
 
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeTrue())
+			})
 
+			It("Should have the correct values in the message", func () {
+				go emitCodesFromSlice(codes, []int{200, 0, 0})
+				go Analyze(resource, codes, messages)
+
+				var receivedMessage *StateChangeMessage
+				Eventually(messages).Should(Receive(&receivedMessage))
+				Expect(receivedMessage.Resource).To(Equal(resource))
+				Expect(receivedMessage.Codes).To(ConsistOf(200, 0, 0))
 			})
 
 		})

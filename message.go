@@ -33,21 +33,21 @@ func (m *StateChangeMessage) MailBody() string {
 		error_recovery = "It seems <strong style=\"color:#5cb85c\">{{.Resource.Url}}</strong> <strong style=\"color:#5cb85c\">has recovered</strong>.<br>"
 	}
 	template_string := "Hi !<br><br>" +
-			"" +
-			"This is an automated message from Gonitor.<br>" +
-			error_recovery +
-			"The following HTTP codes were received : {{.Codes}}.<br><br>" +
-			"The config used is :" +
-			"<ul>" +
-			"<li>Interval : {{.Resource.IntervalInSeconds}} seconds</li>" +
-			"<li>Number of tries : {{.Resource.NumberOfTries}}</li>" +
-			"<li>Failure threshold : {{.Resource.FailureThreshold}}</li>" +
-			"<li>Recovery threshold : {{.Resource.NumberOfTries}}</li>" +
-			"<li>Timeout : {{.Resource.TimeoutInSeconds}} seconds</li>" +
-			"</ul>"
-	template, _ := template.New("body").Parse(template_string)
+		"" +
+		"This is an automated message from Gonitor.<br>" +
+		error_recovery +
+		"The following HTTP codes were received : {{.Codes}}.<br><br>" +
+		"The config used is :" +
+		"<ul>" +
+		"<li>Interval : {{.Resource.IntervalInSeconds}} seconds</li>" +
+		"<li>Number of tries : {{.Resource.NumberOfTries}}</li>" +
+		"<li>Failure threshold : {{.Resource.FailureThreshold}}</li>" +
+		"<li>Recovery threshold : {{.Resource.NumberOfTries}}</li>" +
+		"<li>Timeout : {{.Resource.TimeoutInSeconds}} seconds</li>" +
+		"</ul>"
+	parsed_template, _ := template.New("body").Parse(template_string)
 	var output bytes.Buffer
-	template.Execute(&output, m)
+	parsed_template.Execute(&output, m)
 	return output.String()
 }
 

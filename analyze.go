@@ -10,18 +10,18 @@ import (
 func Analyze(resource Resource, responseCodes <-chan int, messages chan<- *StateChangeMessage) {
 
 	isDown := false
-	lastTenCodes := ring.New(resource.NumberOfTries)
-	firstAlertThreshold := resource.NumberOfTries - 1
+	lastHttpReturnCodes := ring.New(resource.NumberOfTries)
+	numberOfTriesBeforeFirstAlert := resource.NumberOfTries - 1
 	for code := range responseCodes {
-		lastTenCodes.Value = code
-		lastTenCodes = lastTenCodes.Next()
+		lastHttpReturnCodes.Value = code
+		lastHttpReturnCodes = lastHttpReturnCodes.Next()
 
-		codes := RingToIntSlice(lastTenCodes) // slightly overkill, but nice for testing and printing
+		codes := RingToIntSlice(lastHttpReturnCodes) // slightly overkill, but nice for testing and printing
 
 		failure, recovery := computeState(codes, resource.FailureThreshold, resource.NumberOfTries)
-		if firstAlertThreshold > 0 {
+		if numberOfTriesBeforeFirstAlert > 0 {
 			// PASS : we do not send a message until we have enough data
-			firstAlertThreshold--
+			numberOfTriesBeforeFirstAlert--
 		} else if failure && !isDown {
 			isDown = true
 			messages <- ErrorMessage(resource, codes)
@@ -34,7 +34,7 @@ func Analyze(resource Resource, responseCodes <-chan int, messages chan<- *State
 
 // computeState takes HTTP Codes, and tells you whether this could trigger an
 // alarm, and whether it could trigger or a recovery.
-func computeState(codesToAnalyze []int, failureThreshold int, recoveryThreshold int) (isFailure bool, canRecover bool) {
+func computeState(codesToAnalyze []int, failureThreshold int, recoveryThreshold int) (isFailure bool, isRecovery bool) {
 	failures, successes := 0, 0
 	for _, code := range codesToAnalyze {
 		if code < 200 || code >= 300 {

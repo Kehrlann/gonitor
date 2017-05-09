@@ -5,27 +5,31 @@ It's a toy project to try out Go :)
 
 ## Todo next
 
+
 ## Ideas
 ### Testing 
-- [ ] Mock HTTP and SMTP for tests ?
+- [ ] Mock SMTP for tests
 - [ ] Test main.go -> emit, config file ...
 
 ### Features :
 - [ ] Configure log level
 - [ ] Daily summary e-mail (saying i'm alive !) 
-- [ ] Allow running external scripts
 - [ ] Per-resource recipient-list
 - [ ] Hot reload config
 - [ ] Print datetime in e-mail
 
 ### Features : visualisation tool
-- [ ] Save return codes in database
+- [ ] Basic page with websockets, showing messages as they pop up.
 - [ ] Save alerts in database
+- [ ] Save return codes in database
 - [ ] HTML dashboard with config
 - [ ] HTML dashboard showing datapoints with d3js / websockets
-- [ ] Try out React + RxJS
+- [ ] Try out React + RxJS ?
 
 ## Done !
+- [x] HttpMock -> Done
+- [x] Test exec command (works on Linux)
+- [x] Allow running external scripts
 - [x] Add parameter to load config from arbibtrary file
 - [x] Don't send an e-mail if SMTP is not configured properly
 - [x] Emit alerts via e-mail

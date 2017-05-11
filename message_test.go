@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/kehrlann/gonitor/config"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -11,7 +12,7 @@ var _ = Describe("StateChangeMessage : ", func() {
 	var negativeMessage *StateChangeMessage
 
 	BeforeEach(func() {
-		res := Resource{"http://test.com", 60, 2, 10, 3, "" }
+		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		positiveMessage = RecoveryMessage(res, []int{1, 2, 3})
 		negativeMessage = ErrorMessage(res, []int{1, 2, 3})
 	})

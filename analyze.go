@@ -2,12 +2,14 @@ package main
 
 import (
 	"container/ring"
+
+	"github.com/kehrlann/gonitor/config"
 )
 
 // Analyze takes a channel of response Codes, and, every time it receives a new
 // response code, analyzes it's history, detects state transitions, e.g. running -> down
 // or down -> running, and emits the corresponding messages on the appropriate channel
-func Analyze(resource Resource, responseCodes <-chan int, messages chan<- *StateChangeMessage) {
+func Analyze(resource config.Resource, responseCodes <-chan int, messages chan<- *StateChangeMessage) {
 
 	isDown := false
 	lastHttpReturnCodes := ring.New(resource.NumberOfTries)

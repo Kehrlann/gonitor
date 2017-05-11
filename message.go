@@ -5,11 +5,13 @@ import (
 	"time"
 	"text/template"
 	"bytes"
+
+	"github.com/kehrlann/gonitor/config"
 )
 
 // StateChangeMessage represents either a failure or a recovery
 type StateChangeMessage struct {
-	Resource Resource
+	Resource config.Resource
 	IsOk     bool
 	Codes    []int
 	Datetime time.Time
@@ -52,13 +54,13 @@ func (m *StateChangeMessage) MailBody() string {
 }
 
 // ErrorMessage initializes a message with Time.Now() as the creation date and IsOk = false
-func ErrorMessage(resource Resource, codes []int) *StateChangeMessage {
+func ErrorMessage(resource config.Resource, codes []int) *StateChangeMessage {
 	m := &StateChangeMessage{resource, false, codes, time.Now()}
 	return m
 }
 
 // NewMessage initializes a message with Time.Now() as the creation date and IsOk = true
-func RecoveryMessage(resource Resource, codes []int) *StateChangeMessage {
+func RecoveryMessage(resource config.Resource, codes []int) *StateChangeMessage {
 	m := &StateChangeMessage{resource, true, codes, time.Now()}
 	return m
 }

@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"io/ioutil"
@@ -9,7 +9,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-var _ = Describe("Config : ", func() {
+var _ = Describe("Configuration : ", func() {
 	log.SetLevel(log.PanicLevel)
 	Describe("LoadConfig : ", func() {
 		Context("When loading a valid config from a file", func() {

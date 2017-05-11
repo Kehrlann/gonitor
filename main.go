@@ -6,23 +6,24 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/kehrlann/gonitor/config"
 )
 
 func main() {
 	flag.Usage = printUsage
-	path := flag.String("config", DEFAULT_CONFIG_PATH, "Path to the config file")
+	path := flag.String("config", config.DEFAULT_CONFIG_PATH, "Path to the config file")
 	flag.Parse()
 
 	log.SetLevel(log.DebugLevel)
 	log.Info("Starting Gonitor ...")
-	config, err := LoadConfig(*path)
+	configuration, err := config.LoadConfig(*path)
 
 	if err != nil {
 		switch err := err.(type) {
 		default:
 			log.Fatalf("Error loading config : `%v`", err)
 			break
-		case *NoDefaultConfigError:
+		case *config.NoDefaultConfigError:
 			fmt.Println(err.HelpMessage)
 			os.Exit(1)
 		}
@@ -30,13 +31,13 @@ func main() {
 
 	log.Info("Starting monitoring ...")
 	messages := make(chan *StateChangeMessage)
-	for _, resource := range config.Resources {
+	for _, resource := range configuration.Resources {
 		go Run(resource, messages)
 	}
-	emitMessages(messages, &config.Smtp, config.GlobalCommand)
+	emitMessages(messages, &configuration.Smtp, configuration.GlobalCommand)
 }
 
-func emitMessages(messages <-chan *StateChangeMessage, smtp *Smtp, globalCommand string) {
+func emitMessages(messages <-chan *StateChangeMessage, smtp *config.Smtp, globalCommand string) {
 	for m := range messages {
 		log.Info(m)
 		go SendMail(smtp, m)

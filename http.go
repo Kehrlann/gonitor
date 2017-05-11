@@ -4,11 +4,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/kehrlann/gonitor/config"
 	log "github.com/Sirupsen/logrus"
 )
 
 // Run takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
-func Run(resource Resource, messages chan<- *StateChangeMessage) {
+func Run(resource config.Resource, messages chan<- *StateChangeMessage) {
 	responseCodes := make(chan int)
 	client := &http.Client{
 		Timeout: time.Duration(resource.TimeoutInSeconds) * time.Second,

@@ -3,13 +3,14 @@ package main
 import (
 	"runtime"
 
+	"github.com/kehrlann/gonitor/config"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("exec : ", func() {
 	Describe("ExecCommand : ", func() {
-		resourceWithoutCommand := Resource{"http://www.example.com", 60, 2, 10, 3, ""}
+		resourceWithoutCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, ""}
 
 		message := RecoveryMessage(resourceWithoutCommand, []int{200, 200, 200})
 
@@ -26,7 +27,7 @@ var _ = Describe("exec : ", func() {
 			})
 
 			It("Should run the resource command if defined", func() {
-				resourceWithCommand := Resource{"http://www.example.com", 60, 2, 10, 3, "echo"}
+				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "echo"}
 				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
 				ret := ExecCommand(messageWithCommand, "")
@@ -34,7 +35,7 @@ var _ = Describe("exec : ", func() {
 			})
 
 			It("Should override the global command if both are defined", func() {
-				resourceWithCommand := Resource{"http://www.example.com", 60, 2, 10, 3, "go"}
+				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "go"}
 				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
 				ret := ExecCommand(messageWithCommand, "")

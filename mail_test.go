@@ -1,13 +1,15 @@
 package main
 
 import (
+	"github.com/kehrlann/gonitor/config"
+	testlog "github.com/Sirupsen/logrus/hooks/test"
+	log "github.com/Sirupsen/logrus"
+	
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
 	"gopkg.in/gomail.v2"
 	"errors"
-	testlog "github.com/Sirupsen/logrus/hooks/test"
-	log "github.com/Sirupsen/logrus"
 )
 
 type FakeMailer struct {
@@ -37,7 +39,7 @@ var _ = Describe("sendMail -> ", func() {
 	var mailer *FakeMailer
 
 	BeforeEach(func() {
-		res := Resource{"http://test.com", 60, 2, 10, 3, "" }
+		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		// TODO : use pointers to resources ?
 		message = RecoveryMessage(res, []int{1, 2, 3})
 		mailer = &FakeMailer{}
@@ -45,14 +47,14 @@ var _ = Describe("sendMail -> ", func() {
 
 	Context("When SMTP isn't valid -> ", func() {
 		It("Shouldn't try to send an e-mail", func() {
-			smtp := &Smtp{}
+			smtp := &config.Smtp{}
 			sendMail(mailer, smtp, message)
 			Expect(mailer.messages).To(BeEmpty())
 		})
 	})
 
 	Context("When SMTP is valid -> ", func() {
-		smtp := &Smtp{"mail.example.com", 25, "user", "password", "user@example.com", "User", []string{"recipient@example.com" }}
+		smtp := &config.Smtp{"mail.example.com", 25, "user", "password", "user@example.com", "User", []string{"recipient@example.com" }}
 
 		It("Should send an e-mail", func() {
 			sendMail(mailer, smtp, message)

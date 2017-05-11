@@ -5,6 +5,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/kehrlann/gonitor/config"
 )
 
 var _ = Describe("Analyze", func() {
@@ -71,7 +72,7 @@ var _ = Describe("Analyze", func() {
 
 	Describe("Receiving HTTP response Codes", func() {
 
-		resource := Resource{"Url", 2, 2, 3, 2, ""}
+		resource := config.Resource{"Url", 2, 2, 3, 2, ""}
 
 		Context("When not polling", func() {
 			It("Should not emit messages", func() {

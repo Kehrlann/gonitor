@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 
 	"gopkg.in/gomail.v2"
+	"github.com/kehrlann/gonitor/config"
 )
 
 type Mailer interface {
@@ -11,12 +12,12 @@ type Mailer interface {
 }
 
 // SendMail sends a StateChangeMessage via e-mail
-func SendMail(smtp *Smtp, message *StateChangeMessage) {
+func SendMail(smtp *config.Smtp, message *StateChangeMessage) {
 	mailer := gomail.NewDialer(smtp.Host, smtp.Port, smtp.Username, smtp.Password)
 	sendMail(mailer, smtp, message)
 }
 
-func sendMail(mailer Mailer, smtp *Smtp, message *StateChangeMessage) {
+func sendMail(mailer Mailer, smtp *config.Smtp, message *StateChangeMessage) {
 	if !smtp.IsValid() {
 		return
 	}

@@ -4,11 +4,11 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-
+- [ ] Package-ify all the things
+- [ ] Update the help/man page for config with Commands
 
 ## Ideas
 ### Testing 
-- [ ] Mock SMTP for tests
 - [ ] Test main.go -> emit, config file ...
 
 ### Features :
@@ -27,6 +27,7 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS ?
 
 ## Done !
+- [x] Mock SMTP for tests
 - [x] HttpMock -> Done
 - [x] Test exec command (works on Linux)
 - [x] Allow running external scripts

@@ -113,6 +113,11 @@ func (smtp *Smtp) IsValid() bool {
 	return smtp.Host != "" && smtp.Port != 0 && len(smtp.To) > 0 && smtp.FromAddress != ""
 }
 
+// FormatFromHeader creates the From header used in SMTP messages
+func (smtp *Smtp) FormatFromHeader() string {
+	return fmt.Sprintf("%v <%v>", smtp.FromName, smtp.FromAddress)
+}
+
 // LogConfig logs the config at the info level
 func (config *Config) LogConfig() {
 	smtp_validity := "valid"

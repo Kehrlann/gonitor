@@ -3,7 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"os"
-	
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	log "github.com/Sirupsen/logrus"
@@ -191,6 +191,13 @@ var _ = Describe("Config : ", func() {
 			no_port := *smtp
 			no_port.Port = 0
 			Expect(no_port.IsValid()).To(BeFalse())
+		})
+	})
+
+	Describe("FormatFromHeader", func() {
+		It("Should format the headers correctly", func() {
+			smtp := &Smtp{FromAddress: "address@example.com", FromName: "My Name"}
+			Expect(smtp.FormatFromHeader()).To(Equal("My Name <address@example.com>"))
 		})
 	})
 

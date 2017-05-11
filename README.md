@@ -6,6 +6,7 @@ It's a toy project to try out Go :)
 ## Todo next
 - [ ] Package-ify all the things
 - [ ] Update the help/man page for config with Commands
+- [ ] Add Travis CI
 
 ## Ideas
 ### Testing 

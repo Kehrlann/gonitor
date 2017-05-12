@@ -3,7 +3,6 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
-	"fmt"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -16,38 +15,6 @@ type Configuration struct {
 	GlobalCommand string
 	Resources     []Resource
 }
-
-type Smtp struct {
-	Host        string
-	Port        int
-	Username    string
-	Password    string
-	FromAddress string
-	FromName    string
-	To          []string
-}
-
-
-// IsValid tells you whether you can trust this Smtp config to send an e-mail
-func (smtp *Smtp) IsValid() bool {
-	return smtp.Host != "" && smtp.Port != 0 && len(smtp.To) > 0 && smtp.FromAddress != ""
-}
-
-// FormatFromHeader creates the From header used in SMTP messages
-func (smtp *Smtp) FormatFromHeader() string {
-	return fmt.Sprintf("%v <%v>", smtp.FromName, smtp.FromAddress)
-}
-
-// Resource represents an Url to be watched, and all the necessary config/timing parameters
-type Resource struct {
-	Url               string // the Url to watch
-	IntervalInSeconds int    // the interval at which to poll the resource. Defaults to 60s.
-	TimeoutInSeconds  int    // the timeout in seconds. Defaults to 2s.
-	NumberOfTries     int    // number of attempts at getting the resource. Defaults to 10.
-	FailureThreshold  int    // the number of failures within the tries that would raise an alarm. Defaults to 5.
-	Command           string // command to run whenever there is a failure or recovery message
-}
-
 
 // LoadConfig loads a config from a JSON file
 func LoadConfig(path string) (*Configuration, error) {

@@ -7,11 +7,21 @@ import (
 	"time"
 )
 
-
-// Exec command execute the command for the resource. If it does not exist, ExecuteCommand tries to run the default
-// global command passed. It returns a byte buffer, with both StdErr and StdOut in it, mostly for testing purposes.
+// CommandEmitter emits message by running a command, and passing the fields of the StateChange message as the arguments
+// for that command. It tries to run the command associated with the resource, and, if this is not set, it tries to run
+// the default global command passed.
 // Be careful ! This function waits for the command to return, so it might cause massive problems, leaks ...
-func ExecCommand(message *StateChangeMessage, defaultCommand string) *bytes.Buffer {
+type CommandEmitter struct {
+	defaultCommand string
+}
+
+func (c *CommandEmitter) Emit(message *StateChangeMessage) {
+	execCommand(message, c.defaultCommand)
+}
+
+// Exec command execute the command for the resource. It returns a byte buffer, with both StdErr and StdOut in it,
+// mostly for testing purposes.
+func execCommand(message *StateChangeMessage, defaultCommand string) *bytes.Buffer {
 	var command string
 	if message.Resource.Command != "" {
 		command = message.Resource.Command

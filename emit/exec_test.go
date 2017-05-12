@@ -9,20 +9,20 @@ import (
 )
 
 var _ = Describe("exec : ", func() {
-	Describe("ExecCommand : ", func() {
+	Describe("execCommand : ", func() {
 		resourceWithoutCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, ""}
 
 		message := RecoveryMessage(resourceWithoutCommand, []int{200, 200, 200})
 
 		It("Not run any command if not defined", func() {
-			ret := ExecCommand(message, "")
+			ret := execCommand(message, "")
 			Expect(ret).To(BeNil())
 		})
 
 		// Note : don't run on windows because 'echo' is weird on that platform
 		if runtime.GOOS != "windows" {
 			It("Should run the global command if defined", func() {
-				ret := ExecCommand(message, "echo")
+				ret := execCommand(message, "echo")
 				Expect(ret.String()).To(ContainSubstring("RECOVERY"))
 			})
 
@@ -30,7 +30,7 @@ var _ = Describe("exec : ", func() {
 				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "echo"}
 				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
-				ret := ExecCommand(messageWithCommand, "")
+				ret := execCommand(messageWithCommand, "")
 				Expect(ret.String()).To(ContainSubstring("RECOVERY"))
 			})
 
@@ -38,7 +38,7 @@ var _ = Describe("exec : ", func() {
 				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "go"}
 				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
-				ret := ExecCommand(messageWithCommand, "")
+				ret := execCommand(messageWithCommand, "")
 				Expect(ret.String()).To(ContainSubstring("unknown subcommand"))
 			})
 		}

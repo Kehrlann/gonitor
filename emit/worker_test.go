@@ -7,6 +7,8 @@ import (
 )
 
 var _ = Describe("Worker", func() {
+
+	// TODO : remove this
 	It("Should work", func() {
 
 		var err error = nil
@@ -19,4 +21,7 @@ var _ = Describe("Worker", func() {
 			Expect(err).To(BeNil())
 		}
 	})
+
+
+	// TODO : test emitMessages
 })

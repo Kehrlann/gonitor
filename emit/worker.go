@@ -2,14 +2,22 @@ package emit
 
 import (
 	"github.com/kehrlann/gonitor/config"
-	log "github.com/Sirupsen/logrus"
 )
 
 func EmitMessages(messages <-chan *StateChangeMessage, configuration *config.Configuration) {
+	emitters := []Emitter{
+		&MailEmitter{&configuration.Smtp},
+		&CommandEmitter{configuration.GlobalCommand},
+		&LogEmitter{},
+	}
+	emitMessages(emitters, messages)
+}
+
+func emitMessages(emitters []Emitter, messages <-chan *StateChangeMessage){
 	for m := range messages {
-		log.Info(m)
-		go SendMail(&configuration.Smtp, m)
-		go ExecCommand(m, configuration.GlobalCommand)
+		for _, e := range emitters {
+			go e.Emit(m)
+		}
 	}
 }
 

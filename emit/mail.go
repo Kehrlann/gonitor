@@ -7,14 +7,15 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-type Mailer interface {
-	DialAndSend(mail ... *gomail.Message) error
+// Mail Emitter emits messages via e-mail
+type MailEmitter struct {
+	smtp *config.Smtp
 }
 
-// SendMail sends a StateChangeMessage via e-mail
-func SendMail(smtp *config.Smtp, message *StateChangeMessage) {
-	mailer := gomail.NewDialer(smtp.Host, smtp.Port, smtp.Username, smtp.Password)
-	sendMail(mailer, smtp, message)
+// Emit sends a StateChangeMessage via e-mail
+func (emitter *MailEmitter) Emit(message *StateChangeMessage) {
+	mailer := gomail.NewDialer(emitter.smtp.Host, emitter.smtp.Port, emitter.smtp.Username, emitter.smtp.Password)
+	sendMail(mailer, emitter.smtp, message)
 }
 
 func sendMail(mailer Mailer, smtp *config.Smtp, message *StateChangeMessage) {
@@ -33,4 +34,9 @@ func sendMail(mailer Mailer, smtp *config.Smtp, message *StateChangeMessage) {
 	if err := mailer.DialAndSend(m); err != nil {
 		log.Errorf("Error sending e-mail alert : `%v`", err)
 	}
+}
+
+// Mailer describes an entity able to send e-mails. Mostly used for testing purposes
+type Mailer interface {
+	DialAndSend(mail ... *gomail.Message) error
 }

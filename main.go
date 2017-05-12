@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	log "github.com/Sirupsen/logrus"
+	"github.com/kehrlann/gonitor/emit"
 	"github.com/kehrlann/gonitor/config"
+	log "github.com/Sirupsen/logrus"
 )
 
 func main() {
@@ -18,31 +19,23 @@ func main() {
 	log.Info("Starting Gonitor ...")
 	configuration, err := config.LoadConfig(*path)
 
-	if err != nil {
-		switch err := err.(type) {
-		default:
-			log.Fatalf("Error loading config : `%v`", err)
-			break
-		case *config.NoDefaultConfigError:
-			fmt.Println(err.HelpMessage)
-			os.Exit(1)
-		}
+	switch err := err.(type) {
+	case nil:
+		break
+	case *config.NoDefaultConfigError:
+		fmt.Println(err.HelpMessage)
+		os.Exit(1)
+	default:
+		log.Fatalf("Error loading config : `%v`", err)
+		break
 	}
 
 	log.Info("Starting monitoring ...")
-	messages := make(chan *StateChangeMessage)
+	messages := make(chan *emit.StateChangeMessage)
 	for _, resource := range configuration.Resources {
 		go Run(resource, messages)
 	}
-	emitMessages(messages, &configuration.Smtp, configuration.GlobalCommand)
-}
-
-func emitMessages(messages <-chan *StateChangeMessage, smtp *config.Smtp, globalCommand string) {
-	for m := range messages {
-		log.Info(m)
-		go SendMail(smtp, m)
-		go ExecCommand(m, globalCommand)
-	}
+	emit.EmitMessages(messages, configuration)
 }
 
 func printUsage() {

@@ -1,10 +1,10 @@
-package main
+package emit
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/kehrlann/gonitor/config"
 
 	"gopkg.in/gomail.v2"
-	"github.com/kehrlann/gonitor/config"
 )
 
 type Mailer interface {

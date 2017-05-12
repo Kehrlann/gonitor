@@ -6,6 +6,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/kehrlann/gonitor/config"
+	"github.com/kehrlann/gonitor/emit"
 )
 
 var _ = Describe("Analyze", func() {
@@ -76,7 +77,7 @@ var _ = Describe("Analyze", func() {
 
 		Context("When not polling", func() {
 			It("Should not emit messages", func() {
-				messages := make(chan *StateChangeMessage)
+				messages := make(chan *emit.StateChangeMessage)
 				codes := make(chan int)
 				go Analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
@@ -93,7 +94,7 @@ var _ = Describe("Analyze", func() {
 			}
 
 			It("Should not emit messages", func() {
-				messages := make(chan *StateChangeMessage)
+				messages := make(chan *emit.StateChangeMessage)
 				codes := make(chan int)
 				go emitHttpOk(codes)
 				go Analyze(resource, codes, messages)
@@ -110,10 +111,10 @@ var _ = Describe("Analyze", func() {
 				}
 			}
 
-			var messages chan *StateChangeMessage
+			var messages chan *emit.StateChangeMessage
 			var codes chan int
 			BeforeEach(func () {
-				messages = make(chan *StateChangeMessage)
+				messages = make(chan *emit.StateChangeMessage)
 				codes = make(chan int)
 			})
 
@@ -121,7 +122,7 @@ var _ = Describe("Analyze", func() {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
 				go Analyze(resource, codes, messages)
 
-				var receivedMessage *StateChangeMessage
+				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
 			})
@@ -130,7 +131,7 @@ var _ = Describe("Analyze", func() {
 				go emitCodesFromSlice(codes, []int{0, 0, 200, 200, 200})
 				go Analyze(resource, codes, messages)
 
-				var receivedMessage *StateChangeMessage
+				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
 
@@ -142,7 +143,7 @@ var _ = Describe("Analyze", func() {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
 				go Analyze(resource, codes, messages)
 
-				var receivedMessage *StateChangeMessage
+				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.Resource).To(Equal(resource))
 				Expect(receivedMessage.Codes).To(ConsistOf(200, 0, 0))

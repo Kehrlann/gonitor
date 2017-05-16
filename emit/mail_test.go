@@ -34,7 +34,6 @@ func (mailer *FakeMailer) DialAndSend(messages ... *gomail.Message) error {
 }
 
 var _ = Describe("sendMail -> ", func() {
-
 	var message *StateChangeMessage
 	var mailer *FakeMailer
 
@@ -66,8 +65,8 @@ var _ = Describe("sendMail -> ", func() {
 		It("Should log when something goes wrong", func() {
 			hook := testlog.NewGlobal()
 			log.SetLevel(log.ErrorLevel)
-
-			mailer = &FakeMailer{
+			// TODO : how do I remove the error message from STDOUT ?
+			mailer := &FakeMailer{
 				make([]*gomail.Message, 0),
 				func(m *gomail.Message) error { return errors.New("Woops") },
 			}

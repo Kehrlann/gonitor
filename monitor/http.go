@@ -1,4 +1,4 @@
-package main
+package monitor
 
 import (
 	"net/http"
@@ -16,7 +16,7 @@ func Run(resource config.Resource, messages chan<- *emit.StateChangeMessage) {
 		Timeout: time.Duration(resource.TimeoutInSeconds) * time.Second,
 	}
 
-	go Analyze(resource, responseCodes, messages)
+	go analyze(resource, responseCodes, messages)
 
 	for range time.Tick(time.Duration(resource.IntervalInSeconds) * time.Second) {
 		responseCodes <- fetch(client, resource.Url)

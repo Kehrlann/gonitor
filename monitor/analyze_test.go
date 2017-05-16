@@ -1,4 +1,4 @@
-package main
+package monitor
 
 import (
 	"time"
@@ -9,7 +9,7 @@ import (
 	"github.com/kehrlann/gonitor/emit"
 )
 
-var _ = Describe("Analyze", func() {
+var _ = Describe("analyze", func() {
 
 	Describe("Computing state", func() {
 
@@ -79,7 +79,7 @@ var _ = Describe("Analyze", func() {
 			It("Should not emit messages", func() {
 				messages := make(chan *emit.StateChangeMessage)
 				codes := make(chan int)
-				go Analyze(resource, codes, messages)
+				go analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
 			})
 		})
@@ -97,7 +97,7 @@ var _ = Describe("Analyze", func() {
 				messages := make(chan *emit.StateChangeMessage)
 				codes := make(chan int)
 				go emitHttpOk(codes)
-				go Analyze(resource, codes, messages)
+				go analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
 			})
 		})
@@ -120,7 +120,7 @@ var _ = Describe("Analyze", func() {
 
 			It("Should emit failure message", func() {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
-				go Analyze(resource, codes, messages)
+				go analyze(resource, codes, messages)
 
 				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
@@ -129,7 +129,7 @@ var _ = Describe("Analyze", func() {
 
 			It("Should emit a recovery message when recovering", func() {
 				go emitCodesFromSlice(codes, []int{0, 0, 200, 200, 200})
-				go Analyze(resource, codes, messages)
+				go analyze(resource, codes, messages)
 
 				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
@@ -141,7 +141,7 @@ var _ = Describe("Analyze", func() {
 
 			It("Should have the correct values in the message", func () {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
-				go Analyze(resource, codes, messages)
+				go analyze(resource, codes, messages)
 
 				var receivedMessage *emit.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))

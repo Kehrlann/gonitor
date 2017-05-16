@@ -8,6 +8,7 @@ import (
 	"github.com/kehrlann/gonitor/emit"
 	"github.com/kehrlann/gonitor/config"
 	log "github.com/Sirupsen/logrus"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func main() {
 	log.Info("Starting monitoring ...")
 	messages := make(chan *emit.StateChangeMessage)
 	for _, resource := range configuration.Resources {
-		go Run(resource, messages)
+		go monitor.Run(resource, messages)
 	}
 	emit.EmitMessages(messages, configuration)
 }

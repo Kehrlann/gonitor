@@ -33,12 +33,12 @@ func LoadConfig(path string) (*Configuration, error) {
 		return nil, err
 	}
 	log.Info("Configuration loaded !")
-	ret.LogConfig()
+	ret.logConfig()
 	return ret, nil
 }
 
-// LogConfig logs the config at the info level
-func (config *Configuration) LogConfig() {
+// logConfig logs the config at the info level
+func (config *Configuration) logConfig() {
 	smtp_validity := "valid"
 	if !config.Smtp.IsValid() {
 		smtp_validity = "INVALID"

@@ -1,4 +1,4 @@
-package main
+package monitor
 
 import (
 	"container/ring"
@@ -25,12 +25,12 @@ var _ = Describe("Ring", func() {
 			})
 
 			It("Should dump the values in order", func() {
-				intSlice := RingToIntSlice(r)
+				intSlice := ringToIntSlice(r)
 				Expect(intSlice).To(Equal(s))
 			})
 
 			It("Should not mutate the ring", func() {
-				RingToIntSlice(r)
+				ringToIntSlice(r)
 				Expect(r.Value).To(Equal(1))
 				r = r.Next()
 				Expect(r.Value).To(Equal(2))
@@ -52,7 +52,7 @@ var _ = Describe("Ring", func() {
 			})
 
 			It("Should only keep actual ring values", func() {
-				intSlice := RingToIntSlice(r)
+				intSlice := ringToIntSlice(r)
 				Expect(intSlice).To(Equal(s))
 			})
 		})
@@ -69,7 +69,7 @@ var _ = Describe("Ring", func() {
 			})
 
 			It("Should return a zero-ed slice", func() {
-				intSlice := RingToIntSlice(r)
+				intSlice := ringToIntSlice(r)
 				Expect(intSlice).To(Equal(s))
 			})
 		})

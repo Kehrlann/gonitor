@@ -1,4 +1,4 @@
-package emit
+package monitor
 
 import (
 	"testing"
@@ -9,5 +9,5 @@ import (
 
 func TestGonitor(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "gonitor/Emit Suite")
+	RunSpecs(t, "gonitor/monitor Suite")
 }

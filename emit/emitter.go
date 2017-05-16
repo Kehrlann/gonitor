@@ -1,5 +1,5 @@
 package emit
 
-type Emitter interface {
+type emitter interface {
 	Emit(message *StateChangeMessage)
 }

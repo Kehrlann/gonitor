@@ -7,15 +7,15 @@ import (
 	"time"
 )
 
-// CommandEmitter emits message by running a command, and passing the fields of the StateChange message as the arguments
+// commandEmitter emits message by running a command, and passing the fields of the StateChange message as the arguments
 // for that command. It tries to run the command associated with the resource, and, if this is not set, it tries to run
 // the default global command passed.
 // Be careful ! This function waits for the command to return, so it might cause massive problems, leaks ...
-type CommandEmitter struct {
+type commandEmitter struct {
 	defaultCommand string
 }
 
-func (c *CommandEmitter) Emit(message *StateChangeMessage) {
+func (c *commandEmitter) Emit(message *StateChangeMessage) {
 	execCommand(message, c.defaultCommand)
 }
 

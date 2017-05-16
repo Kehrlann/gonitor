@@ -7,18 +7,23 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-// Mail Emitter emits messages via e-mail
-type MailEmitter struct {
+// Mail emitter emits messages via e-mail
+type mailEmitter struct {
 	smtp *config.Smtp
 }
 
+// mailer describes an entity able to send e-mails. Mostly used for testing purposes
+type mailer interface {
+	DialAndSend(mail ... *gomail.Message) error
+}
+
 // Emit sends a StateChangeMessage via e-mail
-func (emitter *MailEmitter) Emit(message *StateChangeMessage) {
+func (emitter *mailEmitter) Emit(message *StateChangeMessage) {
 	mailer := gomail.NewDialer(emitter.smtp.Host, emitter.smtp.Port, emitter.smtp.Username, emitter.smtp.Password)
 	sendMail(mailer, emitter.smtp, message)
 }
 
-func sendMail(mailer Mailer, smtp *config.Smtp, message *StateChangeMessage) {
+func sendMail(mailer mailer, smtp *config.Smtp, message *StateChangeMessage) {
 	if !smtp.IsValid() {
 		return
 	}
@@ -34,9 +39,4 @@ func sendMail(mailer Mailer, smtp *config.Smtp, message *StateChangeMessage) {
 	if err := mailer.DialAndSend(m); err != nil {
 		log.Errorf("Error sending e-mail alert : `%v`", err)
 	}
-}
-
-// Mailer describes an entity able to send e-mails. Mostly used for testing purposes
-type Mailer interface {
-	DialAndSend(mail ... *gomail.Message) error
 }

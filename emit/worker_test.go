@@ -24,6 +24,7 @@ var _ = Describe("Worker", func() {
 			emitters := []emitter{&fakeEmitter{}, &fakeEmitter{}}
 			messages := make(chan *StateChangeMessage)
 
+			// emitMessages is blocking, so should be run asynchronously
 			go emitMessages(emitters, messages)
 			messages <- &StateChangeMessage{}
 

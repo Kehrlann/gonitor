@@ -1,18 +1,21 @@
 # Gonitor
+[![Build Status](https://travis-ci.org/Kehrlann/gonitor.svg?branch=master)](https://travis-ci.org/Kehrlann/gonitor)
+
 Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Package-ify all the things
-- [ ] Update the help/man page for config with Commands
 - [ ] Add Travis CI
 
 ## Ideas
 ### Testing 
-- [ ] Test main.go -> emit, config file ...
+- [ ] Integration testing of main.go ?
 
 ### Features :
+- [ ] Update the help/man page for config with Commands
+- [ ] Add a "help" flag
+- [ ] Add a "example" flag
 - [ ] Configure log level
 - [ ] Daily summary e-mail (saying i'm alive !) 
 - [ ] Per-resource recipient-list
@@ -28,6 +31,8 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS ?
 
 ## Done !
+- [x] Refactor main to be more of glue code (e.g. Resource slice -> worker)
+- [x] Package-ify all the things (make things private where they need to be)
 - [x] Mock SMTP for tests
 - [x] HttpMock -> Done
 - [x] Test exec command (works on Linux)

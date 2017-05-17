@@ -33,9 +33,7 @@ func main() {
 
 	log.Info("Starting monitoring ...")
 	messages := make(chan *emit.StateChangeMessage)
-	for _, resource := range configuration.Resources {
-		go monitor.Run(resource, messages)
-	}
+	monitor.Run(configuration.Resources, messages)
 	emit.EmitMessages(messages, configuration)
 }
 

@@ -1,7 +1,6 @@
 package monitor
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/kehrlann/gonitor/emit"
@@ -12,13 +11,13 @@ import (
 func Run(resource config.Resource, messages chan<- *emit.StateChangeMessage) {
 	responseCodes := make(chan int)
 
-	client := &http.Client{
-		Timeout: time.Duration(resource.TimeoutInSeconds) * time.Second,
-	}
-
 	go analyze(resource, responseCodes, messages)
 
 	for range time.Tick(time.Duration(resource.IntervalInSeconds) * time.Second) {
-		responseCodes <- fetch(client, resource.Url)
+		responseCodes <- Fetch(resource)
 	}
 }
+//
+//func run(resources []config.Resource, messages chan<- *emit.StateChangeMessage) {
+//
+//}

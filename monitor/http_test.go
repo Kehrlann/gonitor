@@ -5,21 +5,27 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	log "github.com/Sirupsen/logrus"
 
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
 var _ = Describe("Http", func() {
 
-	Describe("Fetch", func() {
-
+	log.SetLevel(log.PanicLevel)
+	Describe("httpFetcher.fetch", func() {
 		Context("When fetching from a website", func() {
+			var fetcher *httpFetcher
+
+			BeforeEach(func() {
+				fetcher = &httpFetcher{&http.Client{}}
+				httpmock.Activate()
+			})
 
 			It("Should get the correct code", func() {
+				defer httpmock.DeactivateAndReset()
 
 				hasRequestBeenMade := false
-				httpmock.Activate()
-				defer httpmock.DeactivateAndReset()
 				httpmock.RegisterResponder(
 					"GET",
 					"http://example.com",
@@ -28,10 +34,19 @@ var _ = Describe("Http", func() {
 						return httpmock.NewStringResponse(200, `Woo-hoo`), nil
 					})
 
-				status_code := fetch(&http.Client{}, "http://example.com")
+				status_code := fetcher.fetch("http://example.com")
 
 				Expect(status_code).To(Equal(200))
 				Expect(hasRequestBeenMade).To(BeTrue())
+			})
+
+			It("Should return 0 when timing out", func () {
+				defer httpmock.DeactivateAndReset()
+				// Don't register responder -> the request should fail
+
+				status_code := fetcher.fetch("http://example.com")
+
+				Expect(status_code).To(Equal(0))
 			})
 		})
 	})

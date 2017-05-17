@@ -6,7 +6,7 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Add Travis CI
+- [ ] Basic page with websockets, showing messages as they pop up
 
 ## Ideas
 ### Testing 
@@ -23,7 +23,6 @@ It's a toy project to try out Go :)
 - [ ] Print datetime in e-mail
 
 ### Features : visualisation tool
-- [ ] Basic page with websockets, showing messages as they pop up.
 - [ ] Save alerts in database
 - [ ] Save return codes in database
 - [ ] HTML dashboard with config
@@ -31,6 +30,7 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS ?
 
 ## Done !
+- [x] Add Travis CI
 - [x] Refactor main to be more of glue code (e.g. Resource slice -> worker)
 - [x] Package-ify all the things (make things private where they need to be)
 - [x] Mock SMTP for tests

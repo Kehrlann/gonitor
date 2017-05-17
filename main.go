@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kehrlann/gonitor/emit"
+	"github.com/kehrlann/gonitor/monitor/alert"
 	"github.com/kehrlann/gonitor/config"
 	log "github.com/Sirupsen/logrus"
 	"github.com/kehrlann/gonitor/monitor"
@@ -32,9 +32,9 @@ func main() {
 	}
 
 	log.Info("Starting monitoring ...")
-	messages := make(chan *emit.StateChangeMessage)
-	monitor.Run(configuration.Resources, messages)
-	emit.EmitMessages(messages, configuration)
+	messages := make(chan *alert.StateChangeMessage)
+	monitor.Monitor(configuration.Resources, messages)
+	alert.EmitMessages(messages, configuration)
 }
 
 func printUsage() {

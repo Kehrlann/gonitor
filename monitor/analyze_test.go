@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/kehrlann/gonitor/config"
-	"github.com/kehrlann/gonitor/emit"
+	"github.com/kehrlann/gonitor/monitor/alert"
 )
 
 var _ = Describe("analyze", func() {
@@ -76,8 +76,8 @@ var _ = Describe("analyze", func() {
 		resource := config.Resource{"Url", 2, 2, 3, 2, ""}
 
 		Context("When not polling", func() {
-			It("Should not emit messages", func() {
-				messages := make(chan *emit.StateChangeMessage)
+			It("Should not alert messages", func() {
+				messages := make(chan *alert.StateChangeMessage)
 				codes := make(chan int)
 				go analyze(resource, codes, messages)
 				Consistently(messages).ShouldNot(Receive())
@@ -88,13 +88,13 @@ var _ = Describe("analyze", func() {
 
 			emitHttpOk := func(codes chan<- int) {
 				for range time.Tick(2 * time.Millisecond) {
-					// TODO : emit random Codes between 200 and 300 (HTTP 2xx) ?
+					// TODO : alert random Codes between 200 and 300 (HTTP 2xx) ?
 					codes <- 200
 				}
 			}
 
-			It("Should not emit messages", func() {
-				messages := make(chan *emit.StateChangeMessage)
+			It("Should not alert messages", func() {
+				messages := make(chan *alert.StateChangeMessage)
 				codes := make(chan int)
 				go emitHttpOk(codes)
 				go analyze(resource, codes, messages)
@@ -111,27 +111,27 @@ var _ = Describe("analyze", func() {
 				}
 			}
 
-			var messages chan *emit.StateChangeMessage
+			var messages chan *alert.StateChangeMessage
 			var codes chan int
 			BeforeEach(func () {
-				messages = make(chan *emit.StateChangeMessage)
+				messages = make(chan *alert.StateChangeMessage)
 				codes = make(chan int)
 			})
 
-			It("Should emit failure message", func() {
+			It("Should alert failure message", func() {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
 				go analyze(resource, codes, messages)
 
-				var receivedMessage *emit.StateChangeMessage
+				var receivedMessage *alert.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
 			})
 
-			It("Should emit a recovery message when recovering", func() {
+			It("Should alert a recovery message when recovering", func() {
 				go emitCodesFromSlice(codes, []int{0, 0, 200, 200, 200})
 				go analyze(resource, codes, messages)
 
-				var receivedMessage *emit.StateChangeMessage
+				var receivedMessage *alert.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.IsOk).To(BeFalse())
 
@@ -143,7 +143,7 @@ var _ = Describe("analyze", func() {
 				go emitCodesFromSlice(codes, []int{200, 0, 0})
 				go analyze(resource, codes, messages)
 
-				var receivedMessage *emit.StateChangeMessage
+				var receivedMessage *alert.StateChangeMessage
 				Eventually(messages).Should(Receive(&receivedMessage))
 				Expect(receivedMessage.Resource).To(Equal(resource))
 				Expect(receivedMessage.Codes).To(ConsistOf(200, 0, 0))

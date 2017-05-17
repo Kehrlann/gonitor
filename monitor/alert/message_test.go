@@ -1,4 +1,4 @@
-package emit
+package alert
 
 import (
 	"github.com/kehrlann/gonitor/config"
@@ -89,7 +89,7 @@ var _ = Describe("StateChangeMessage : ", func() {
 							"Hi !<br><br>" +
 								"" +
 								"This is an automated message from Gonitor.<br>" +
-								"It seems <strong style=\"color:#d9534f\">an error</strong> occurred when polling <strong style=\"color:#d9534f\">http://test.com</strong>.<br>" +
+								"It seems <strong style=\"color:#d9534f\">an error</strong> occurred while polling <strong style=\"color:#d9534f\">http://test.com</strong>.<br>" +
 								"The following HTTP codes were received : [1 2 3].<br><br>" +
 								"The config used is :" +
 								"<ul>" +

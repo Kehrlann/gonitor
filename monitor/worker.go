@@ -3,18 +3,18 @@ package monitor
 import (
 	"time"
 
-	"github.com/kehrlann/gonitor/emit"
+	"github.com/kehrlann/gonitor/monitor/alert"
 	"github.com/kehrlann/gonitor/config"
 )
 
-// Run takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
-func Run(resources []config.Resource, messages chan<- *emit.StateChangeMessage) {
+// Monitor takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
+func Monitor(resources []config.Resource, messages chan<- *alert.StateChangeMessage) {
 	for _, resource := range resources {
-		go run(resource, messages)
+		go monitor(resource, messages)
 	}
 }
 
-func run(resource config.Resource, messages chan<- *emit.StateChangeMessage) {
+func monitor(resource config.Resource, messages chan<- *alert.StateChangeMessage) {
 	responseCodes := make(chan int)
 
 	go analyze(resource, responseCodes, messages)

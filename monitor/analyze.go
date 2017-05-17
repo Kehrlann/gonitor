@@ -4,13 +4,13 @@ import (
 	"container/ring"
 
 	"github.com/kehrlann/gonitor/config"
-	"github.com/kehrlann/gonitor/emit"
+	"github.com/kehrlann/gonitor/monitor/alert"
 )
 
 // analyze takes a channel of response Codes, and, every time it receives a new
 // response code, analyzes it's history, detects state transitions, e.g. running -> down
 // or down -> running, and emits the corresponding messages on the appropriate channel
-func analyze(resource config.Resource, responseCodes <-chan int, messages chan<- *emit.StateChangeMessage) {
+func analyze(resource config.Resource, responseCodes <-chan int, messages chan<- *alert.StateChangeMessage) {
 
 	isDown := false
 	lastHttpReturnCodes := ring.New(resource.NumberOfTries)
@@ -27,10 +27,10 @@ func analyze(resource config.Resource, responseCodes <-chan int, messages chan<-
 			numberOfTriesBeforeFirstAlert--
 		} else if failure && !isDown {
 			isDown = true
-			messages <- emit.ErrorMessage(resource, codes)
+			messages <- alert.ErrorMessage(resource, codes)
 		} else if isDown && recovery {
 			isDown = false
-			messages <- emit.RecoveryMessage(resource, codes)
+			messages <- alert.RecoveryMessage(resource, codes)
 		}
 	}
 }

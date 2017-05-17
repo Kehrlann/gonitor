@@ -1,4 +1,4 @@
-package emit
+package alert
 
 import (
 	"fmt"
@@ -30,7 +30,7 @@ func (m *StateChangeMessage) MailSubject() string {
 }
 
 func (m *StateChangeMessage) MailBody() string {
-	error_recovery := "It seems <strong style=\"color:#d9534f\">an error</strong> occurred when polling <strong style=\"color:#d9534f\">{{.Resource.Url}}</strong>.<br>"
+	error_recovery := "It seems <strong style=\"color:#d9534f\">an error</strong> occurred while polling <strong style=\"color:#d9534f\">{{.Resource.Url}}</strong>.<br>"
 	if m.IsOk {
 		error_recovery = "It seems <strong style=\"color:#5cb85c\">{{.Resource.Url}}</strong> <strong style=\"color:#5cb85c\">has recovered</strong>.<br>"
 	}

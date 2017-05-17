@@ -1,4 +1,4 @@
-package emit
+package alert
 
 import (
 	. "github.com/onsi/ginkgo"

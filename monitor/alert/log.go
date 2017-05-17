@@ -1,4 +1,4 @@
-package emit
+package alert
 
 import (
 	log "github.com/Sirupsen/logrus"

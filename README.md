@@ -6,7 +6,9 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Basic page with websockets, showing messages as they pop up
+- [ ] Add a websockets server, shooting fake StateChangeMessages with a ticker
+- [ ] Display those messages in the default index page
+- [ ] Hook up an emitter to the websockets server
 
 ## Ideas
 ### Testing 
@@ -30,6 +32,7 @@ It's a toy project to try out Go :)
 - [ ] Try out React + RxJS ?
 
 ## Done !
+- [x] Add basic HTTP server to display an HTML welcome page
 - [x] Add Travis CI
 - [x] Refactor main to be more of glue code (e.g. Resource slice -> worker)
 - [x] Package-ify all the things (make things private where they need to be)

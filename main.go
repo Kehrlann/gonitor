@@ -9,6 +9,7 @@ import (
 	"github.com/kehrlann/gonitor/config"
 	log "github.com/Sirupsen/logrus"
 	"github.com/kehrlann/gonitor/monitor"
+	"github.com/kehrlann/gonitor/server/web"
 )
 
 func main() {
@@ -34,6 +35,7 @@ func main() {
 	log.Info("Starting monitoring ...")
 	messages := make(chan *alert.StateChangeMessage)
 	monitor.Monitor(configuration.Resources, messages)
+	web.Serve()
 	alert.EmitMessages(messages, configuration)
 }
 

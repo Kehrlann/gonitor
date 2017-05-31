@@ -9,13 +9,13 @@ func HandleIndex(response http.ResponseWriter, request *http.Request) {
     <meta charset="utf-8">
     <title>Websocket example</title>
     <script>
-        var exampleSocket = new WebSocket("ws://192.168.56.101:3000/");
+        var exampleSocket = new WebSocket("ws://192.168.56.101:3000/ws");
         exampleSocket.onmessage = function(event) {
-            var msg = JSON.parse(event.data);
+            var msg = event.data;
 
-            var existingMessages = getElementById("messages").innerHTML;
+            var existingMessages = document.getElementById("messages").innerHTML;
             var newMessage = "<div>"+msg+"</div>";
-            getElementById("userlistbox").innerHTML = newMessage + existingMessages;
+            document.getElementById("messages").innerHTML = newMessage + existingMessages;
         };
     </script>
 </head>

@@ -6,8 +6,8 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Add a websockets server, shooting fake StateChangeMessages with a ticker
-- [ ] Display those messages in the default index page
+- [x] Add a websockets server, shooting fake StateChangeMessages with a ticker
+- [x] Display those messages in the default index page
 - [ ] Hook up an emitter to the websockets server
 
 ## Ideas

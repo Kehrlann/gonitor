@@ -7,10 +7,12 @@ import (
 )
 
 // Monitor takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly
-func Monitor(resources []config.Resource, messages chan<- *StateChangeMessage) {
+func Monitor(resources []config.Resource) <-chan *StateChangeMessage {
+	messages := make(chan *StateChangeMessage)
 	for _, resource := range resources {
 		go monitor(resource, messages)
 	}
+	return messages
 }
 
 func monitor(resource config.Resource, messages chan<- *StateChangeMessage) {

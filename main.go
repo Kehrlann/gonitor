@@ -33,8 +33,7 @@ func main() {
 	}
 
 	log.Info("Starting monitoring ...")
-	messages := make(chan *monitor.StateChangeMessage)
-	monitor.Monitor(configuration.Resources, messages)
+	messages := monitor.Monitor(configuration.Resources)
 
 	// This is where we do the glue
 	// Options :

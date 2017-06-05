@@ -1,4 +1,4 @@
-package assets
+package handlers
 
 import "net/http"
 

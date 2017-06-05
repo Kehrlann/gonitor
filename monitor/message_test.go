@@ -1,4 +1,4 @@
-package alert
+package monitor
 
 import (
 	"github.com/kehrlann/gonitor/config"

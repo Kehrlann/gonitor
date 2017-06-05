@@ -35,6 +35,16 @@ func main() {
 	log.Info("Starting monitoring ...")
 	messages := make(chan *alert.StateChangeMessage)
 	monitor.Monitor(configuration.Resources, messages)
+
+	// This is where we do the glue
+	// Options :
+	// 1. web.Serve returns a channel of ws  connections, the emitters eats it
+	// 2. EmitMessages is non blocking and return a websocket connection handler, which is passed to Serve ; and serve
+	//		becomes blocking
+	// 3. We create a broker that we pass to both, which mediates their interactions
+	// 4. We pass the messages channel to the web.Serve so it can use it to send the messages. Breaks the
+	//		logical boundaries (web.Serve creates some sort of emitters), but is clean regarding the glue code
+	// "REGSITER CLIENT"
 	web.Serve()
 	alert.EmitMessages(messages, configuration)
 }

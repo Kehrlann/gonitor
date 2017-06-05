@@ -10,6 +10,7 @@ import (
 
 	"gopkg.in/gomail.v2"
 	"errors"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 type FakeMailer struct {
@@ -34,13 +35,13 @@ func (mailer *FakeMailer) DialAndSend(messages ... *gomail.Message) error {
 }
 
 var _ = Describe("sendMail -> ", func() {
-	var message *StateChangeMessage
+	var message *monitor.StateChangeMessage
 	var mailer *FakeMailer
 
 	BeforeEach(func() {
 		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		// TODO : use pointers to resources ?
-		message = RecoveryMessage(res, []int{1, 2, 3})
+		message = monitor.RecoveryMessage(res, []int{1, 2, 3})
 		mailer = &FakeMailer{}
 	})
 

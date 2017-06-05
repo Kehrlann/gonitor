@@ -5,6 +5,7 @@ import (
 	"github.com/kehrlann/gonitor/config"
 
 	"gopkg.in/gomail.v2"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 // Mail emitter emits messages via e-mail
@@ -18,12 +19,12 @@ type mailer interface {
 }
 
 // Emit sends a StateChangeMessage via e-mail
-func (emitter *mailEmitter) Emit(message *StateChangeMessage) {
+func (emitter *mailEmitter) Emit(message *monitor.StateChangeMessage) {
 	mailer := gomail.NewDialer(emitter.smtp.Host, emitter.smtp.Port, emitter.smtp.Username, emitter.smtp.Password)
 	sendMail(mailer, emitter.smtp, message)
 }
 
-func sendMail(mailer mailer, smtp *config.Smtp, message *StateChangeMessage) {
+func sendMail(mailer mailer, smtp *config.Smtp, message *monitor.StateChangeMessage) {
 	if !smtp.IsValid() {
 		return
 	}

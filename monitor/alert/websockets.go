@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 	"sync"
 	"encoding/json"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 type WebsocketsEmitter struct {
@@ -12,7 +13,7 @@ type WebsocketsEmitter struct {
 	lock sync.Mutex
 }
 
-func (emitter *WebsocketsEmitter) Emit(message *StateChangeMessage) {
+func (emitter *WebsocketsEmitter) Emit(message *monitor.StateChangeMessage) {
 	for _, conn := range emitter.websocketConnections {
 		// TODO : try to trigger an error when marshalling
 		jsonMessage, _ := json.Marshal(message)

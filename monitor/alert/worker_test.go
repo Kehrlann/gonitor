@@ -4,6 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"sync"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("Worker", func() {
@@ -11,8 +12,8 @@ var _ = Describe("Worker", func() {
 	Describe("emitMessages", func() {
 		It("Should Emit messages on all configured emitters", func() {
 			emitters := []emitter{newFakeChan(), newFakeMutex()}
-			messages := make(chan *StateChangeMessage, 1)
-			messages <- &StateChangeMessage{}
+			messages := make(chan *monitor.StateChangeMessage, 1)
+			messages <- &monitor.StateChangeMessage{}
 			close(messages)
 
 			// emitMessages is blocking, so should be run asynchronously
@@ -25,15 +26,15 @@ var _ = Describe("Worker", func() {
 })
 
 type fakeChanEmitter struct {
-	calls chan *StateChangeMessage
+	calls chan *monitor.StateChangeMessage
 }
 
-func (emitter *fakeChanEmitter) Emit(m *StateChangeMessage) {
+func (emitter *fakeChanEmitter) Emit(m *monitor.StateChangeMessage) {
 	emitter.calls <- m
 }
 
 func newFakeChan() *fakeChanEmitter {
-	return &fakeChanEmitter{make(chan *StateChangeMessage)}
+	return &fakeChanEmitter{make(chan *monitor.StateChangeMessage)}
 }
 
 type fakeMutexEmitter struct {
@@ -41,7 +42,7 @@ type fakeMutexEmitter struct {
 	lock sync.Mutex
 }
 
-func (emitter *fakeMutexEmitter) Emit(m *StateChangeMessage) {
+func (emitter *fakeMutexEmitter) Emit(m *monitor.StateChangeMessage) {
 	emitter.lock.Lock()
 	defer emitter.lock.Unlock()
 	emitter.hasBeenCalled = true

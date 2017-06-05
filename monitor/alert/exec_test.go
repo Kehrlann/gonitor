@@ -6,13 +6,14 @@ import (
 	"github.com/kehrlann/gonitor/config"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("exec : ", func() {
 	Describe("execCommand : ", func() {
 		resourceWithoutCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, ""}
 
-		message := RecoveryMessage(resourceWithoutCommand, []int{200, 200, 200})
+		message := monitor.RecoveryMessage(resourceWithoutCommand, []int{200, 200, 200})
 
 		It("Not run any command if not defined", func() {
 			ret := execCommand(message, "")
@@ -28,7 +29,7 @@ var _ = Describe("exec : ", func() {
 
 			It("Should run the resource command if defined", func() {
 				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "echo"}
-				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
+				messageWithCommand := monitor.RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
 				ret := execCommand(messageWithCommand, "")
 				Expect(ret.String()).To(ContainSubstring("RECOVERY"))
@@ -36,7 +37,7 @@ var _ = Describe("exec : ", func() {
 
 			It("Should override the global command if both are defined", func() {
 				resourceWithCommand := config.Resource{"http://www.example.com", 60, 2, 10, 3, "go"}
-				messageWithCommand := RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
+				messageWithCommand := monitor.RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
 				ret := execCommand(messageWithCommand, "")
 				Expect(ret.String()).To(ContainSubstring("unknown subcommand"))

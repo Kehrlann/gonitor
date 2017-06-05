@@ -7,16 +7,17 @@ import (
 	. "github.com/onsi/gomega"
 
 	"math"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("websockets -> ", func() {
-	var message *StateChangeMessage
+	var message *monitor.StateChangeMessage
 	var mailer *FakeMailer
 
 	BeforeEach(func() {
 		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		// TODO : use pointers to resources ?
-		message = RecoveryMessage(res, []int{1, 2, 3})
+		message = monitor.RecoveryMessage(res, []int{1, 2, 3})
 		mailer = &FakeMailer{}
 	})
 

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"time"
+	"github.com/kehrlann/gonitor/monitor"
 )
 
 // commandEmitter emits message by running a command, and passing the fields of the StateChange message as the arguments
@@ -15,13 +16,13 @@ type commandEmitter struct {
 	defaultCommand string
 }
 
-func (c *commandEmitter) Emit(message *StateChangeMessage) {
+func (c *commandEmitter) Emit(message *monitor.StateChangeMessage) {
 	execCommand(message, c.defaultCommand)
 }
 
 // Exec command execute the command for the resource. It returns a byte buffer, with both StdErr and StdOut in it,
 // mostly for testing purposes.
-func execCommand(message *StateChangeMessage, defaultCommand string) *bytes.Buffer {
+func execCommand(message *monitor.StateChangeMessage, defaultCommand string) *bytes.Buffer {
 	var command string
 	if message.Resource.Command != "" {
 		command = message.Resource.Command

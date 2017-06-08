@@ -4,32 +4,27 @@ import (
 	"github.com/kehrlann/gonitor/config"
 
 	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
-
-	"math"
 	"github.com/kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("websockets -> ", func() {
 	var message *monitor.StateChangeMessage
-	var mailer *FakeMailer
+	// TODO : test me !
+	// TODO : you need to read the message to be able to know whether the connection was closed or not ... test that
+	// TODO : test timeout on client
+	// TODO : test connection closed
+	//			Caveat : apparently you have to read messages to be sure that the connection has been closed
+	// 				conn.SetReadDeadline(time.Now().Add(time.Second))
+	//				conn.ReadMessage()
 
 	BeforeEach(func() {
 		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		// TODO : use pointers to resources ?
 		message = monitor.RecoveryMessage(res, []int{1, 2, 3})
-		mailer = &FakeMailer{}
 	})
 
 	Context("Tech tests ", func() {
 		It("is fun", func() {
-			var a uint8
-			a = math.MaxUint8
-
-			Expect(a).To(BeNumerically("==", 255))
-
-			b := a + 1
-			Expect(b).To(BeNumerically("==", 0))
 		})
 	})
 })

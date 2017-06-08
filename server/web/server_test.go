@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 	log "github.com/Sirupsen/logrus"
 	testlog "github.com/Sirupsen/logrus/hooks/test"
+	"github.com/kehrlann/gonitor/server/web/handlers"
 )
 
 var _ = Describe("Server", func() {
@@ -17,7 +18,7 @@ var _ = Describe("Server", func() {
 	var cleanup func()
 
 	BeforeSuite(func() {
-		cleanup = Serve()
+		cleanup = serve(handlers.WebsocketHandler{make(chan *websocket.Conn, 10)})
 	})
 
 	AfterSuite(func() {
@@ -83,7 +84,6 @@ var _ = Describe("Server", func() {
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 
-		// TODO : cleanup (otherwise the server is still open and this connection remains open
 		It("Should serve the websocket upgrade page", func() {
 			getResp := func() (string) {
 				dialer := &websocket.Dialer{}

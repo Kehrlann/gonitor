@@ -73,37 +73,6 @@ var _ = Describe("websockets -> ", func() {
 			Expect(emitter).ToNot(BeNil())
 		})
 
-		It("Should manually register one connection", func() {
-			conn := &websocket.Conn{}
-			emitter.RegisterConnection(conn)
-
-			Expect(emitter.websocketConnections).To(ContainElement(conn))
-		})
-
-		It("Should manually register multiple connections", func() {
-			emitter.RegisterConnection(&websocket.Conn{})
-			emitter.RegisterConnection(&websocket.Conn{})
-			emitter.RegisterConnection(&websocket.Conn{})
-
-			Expect(len(emitter.websocketConnections)).To(BeNumerically(">", 1))
-		})
-
-		It("Should manually unregister an existing connection", func() {
-			conn := &websocket.Conn{}
-			emitter.RegisterConnection(conn)
-			emitter.UnregisterConnection(emitter.currentIndex - 1)
-
-			Expect(emitter.websocketConnections).ToNot(ContainElement(conn))
-		})
-
-		It("Should not fail when trying to unregister a non existing connection", func() {
-			conn := &websocket.Conn{}
-			emitter.RegisterConnection(conn)
-			emitter.UnregisterConnection(999)
-
-			Expect(emitter.websocketConnections).To(ContainElement(conn))
-		})
-
 		It("Should automatically register incoming connections", func() {
 			conn := &websocket.Conn{}
 			connections <- conn

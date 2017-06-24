@@ -3,8 +3,6 @@ package web
 import (
 	"net/http"
 	"io/ioutil"
-	"time"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/gorilla/websocket"
@@ -84,27 +82,6 @@ var _ = Describe("Server", func() {
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 
-		It("Should serve the websocket upgrade page", func() {
-			getResp := func() (string) {
-				dialer := &websocket.Dialer{}
-				conn, _, _ := dialer.Dial("ws://127.0.0.1:3000/ws", nil)
-				_, message, _ := conn.ReadMessage()
-				return string(message)
-			}
-
-			Eventually(getResp).Should(ContainSubstring("date"))
-		})
-
-		It("Should close the connection", func () {
-			dialer := &websocket.Dialer{}
-			conn, _, _ := dialer.Dial("ws://127.0.0.1:3000/ws", nil)
-			time.Sleep(1 * time.Second)
-			conn.WriteControl(websocket.CloseMessage, nil, time.Now().Add(time.Second))
-			//err := conn.Close()
-			time.Sleep(5 * time.Second)
-
-			//Expect(err).To(BeNil())
-		})
+		// TODO : add tests for websockets connections being added
 	})
-
 })

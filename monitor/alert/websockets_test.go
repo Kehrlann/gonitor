@@ -61,16 +61,51 @@ var _ = Describe("websockets -> ", func() {
 	})
 
 	Describe("New WebsocketEmitter", func () {
+		var connections chan *websocket.Conn
+		var emitter *WebsocketsEmitter
+
+		BeforeEach(func() {
+			connections = make(chan *websocket.Conn, 10)
+			emitter = NewWebsocketEmitter(connections)
+		})
+
 		It("Should create", func() {
-			emitter := NewWebsocketEmitter(make(chan *websocket.Conn))
 			Expect(emitter).ToNot(BeNil())
 		})
 
-		It("Should register incoming connections", func() {
-			connections := make(chan *websocket.Conn, 10)
+		It("Should manually register one connection", func() {
 			conn := &websocket.Conn{}
-			emitter := NewWebsocketEmitter(connections)
+			emitter.RegisterConnection(conn)
 
+			Expect(emitter.websocketConnections).To(ContainElement(conn))
+		})
+
+		It("Should manually register multiple connections", func() {
+			emitter.RegisterConnection(&websocket.Conn{})
+			emitter.RegisterConnection(&websocket.Conn{})
+			emitter.RegisterConnection(&websocket.Conn{})
+
+			Expect(len(emitter.websocketConnections)).To(BeNumerically(">", 1))
+		})
+
+		It("Should manually unregister an existing connection", func() {
+			conn := &websocket.Conn{}
+			emitter.RegisterConnection(conn)
+			emitter.UnregisterConnection(emitter.currentIndex - 1)
+
+			Expect(emitter.websocketConnections).ToNot(ContainElement(conn))
+		})
+
+		It("Should not fail when trying to unregister a non existing connection", func() {
+			conn := &websocket.Conn{}
+			emitter.RegisterConnection(conn)
+			emitter.UnregisterConnection(999)
+
+			Expect(emitter.websocketConnections).To(ContainElement(conn))
+		})
+
+		It("Should automatically register incoming connections", func() {
+			conn := &websocket.Conn{}
 			connections <- conn
 
 			Eventually(emitter.websocketConnections).Should(ContainElement(conn))
@@ -79,7 +114,6 @@ var _ = Describe("websockets -> ", func() {
 
 	BeforeEach(func() {
 		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
-		// TODO : use pointers to resources ?
 		message = monitor.RecoveryMessage(res, []int{1, 2, 3})
 	})
 

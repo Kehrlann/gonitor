@@ -25,38 +25,51 @@ var _ = Describe("websockets -> ", func() {
 			emitter := &WebsocketsEmitter{websocketConnections:make(map[uint]*websocket.Conn)}
 			conn := &websocket.Conn{}
 
-			emitter.RegisterConnection(conn)
+			emitter.registerConnection(conn)
 
-			Expect(emitter.websocketConnections).To(ContainElement(conn))
+			Expect(emitter.getConnections()).To(ContainElement(conn))
 		})
 
 		It("Should register multiple connetions", func () {
 			emitter := &WebsocketsEmitter{websocketConnections:make(map[uint]*websocket.Conn)}
 			conn := &websocket.Conn{}
 
-			emitter.RegisterConnection(conn)
-			emitter.RegisterConnection(conn)
+			emitter.registerConnection(conn)
+			emitter.registerConnection(conn)
 
-			Expect(len(emitter.websocketConnections)).To(Equal(2))
+			Expect(len(emitter.getConnections())).To(Equal(2))
 		})
 
 		It("Should unregister a connection", func () {
 			emitter := &WebsocketsEmitter{websocketConnections:make(map[uint]*websocket.Conn)}
 			conn := &websocket.Conn{}
-			emitter.RegisterConnection(conn)
+			emitter.registerConnection(conn)
 
-			emitter.UnregisterConnection(0)
+			emitter.unregisterConnection(0)
 
-			Expect(emitter.websocketConnections).To(BeEmpty())
+			Expect(emitter.getConnections()).To(BeEmpty())
 		})
 
 		It("Should not blow up when trying to unregister a non-indexed connection", func () {
 			emitter := &WebsocketsEmitter{websocketConnections:make(map[uint]*websocket.Conn)}
 			conn := &websocket.Conn{}
-			emitter.RegisterConnection(conn)
-			emitter.UnregisterConnection(99)
+			emitter.registerConnection(conn)
+			emitter.unregisterConnection(99)
 
-			Expect(emitter.websocketConnections).To(ContainElement(conn))
+			Expect(emitter.getConnections()).To(ContainElement(conn))
+		})
+	})
+
+	Describe("getConnections", func () {
+		It("Should copy the map", func () {
+			emitter := &WebsocketsEmitter{websocketConnections:make(map[uint]*websocket.Conn)}
+			conn := &websocket.Conn{}
+			emitter.registerConnection(conn)
+
+			connections := emitter.getConnections()
+			delete(connections, 0)
+
+			Expect(emitter.getConnections()).To(ContainElement(conn))
 		})
 	})
 
@@ -77,7 +90,7 @@ var _ = Describe("websockets -> ", func() {
 			conn := &websocket.Conn{}
 			connections <- conn
 
-			Eventually(emitter.websocketConnections).Should(ContainElement(conn))
+			Eventually(emitter.getConnections).Should(ContainElement(conn))
 		})
 	})
 

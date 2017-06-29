@@ -19,6 +19,7 @@ func (emitter *WebsocketsEmitter) Emit(message *monitor.StateChangeMessage) {
 	if marshalErr != nil {
 		// TODO : try to trigger an error when marshalling
 		//		what should we do ?
+		// 		Probaly log and return
 	}
 
 	for key, conn := range emitter.websocketConnections {
@@ -26,8 +27,7 @@ func (emitter *WebsocketsEmitter) Emit(message *monitor.StateChangeMessage) {
 		writeErr := conn.WriteMessage(websocket.TextMessage, jsonMessage)
 
 		if writeErr != nil {
-			// TODO : Unregister when error ... but what about error cause ?
-			// 			should we check for timeout ? Closed connection ?
+			// Usually when a connection is closed, you get an error (forcefully closed or with a CloseMessage)
 			emitter.unregisterConnection(key)
 		}
 	}
@@ -51,15 +51,6 @@ func (emitter *WebsocketsEmitter) registerConnection(connection *websocket.Conn)
 	defer emitter.lock.Unlock()
 	emitter.websocketConnections[emitter.currentIndex] = connection
 	emitter.currentIndex++
-
-	// TODO : can't do this because it breaks tests (the underlying connection being null)
-	//go func() {
-	//	for {
-			// See closed messages !
-			// connection.SetReadDeadline(time.Now().Add(10 * time.Second))
-			// connection.ReadMessage()
-	//	}
-	//}()
 }
 
 func (emitter *WebsocketsEmitter) unregisterConnection(key uint) {

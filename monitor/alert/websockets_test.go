@@ -94,6 +94,30 @@ var _ = Describe("websockets -> ", func() {
 		})
 	})
 
+	Describe("Emit", func() {
+		var connections chan *websocket.Conn
+		var emitter *WebsocketsEmitter
+		var message *monitor.StateChangeMessage
+
+		BeforeEach(func() {
+			connections = make(chan *websocket.Conn, 10)
+			emitter = NewWebsocketEmitter(connections)
+			message = monitor.RecoveryMessage(config.Resource{}, []int {})
+		})
+
+		It("Should not fail when there are no connections", func () {
+			emitter.Emit(message)
+		})
+
+		It("Should write to all connections", func() {
+			first_connection := &websocket.Conn{}
+			second_connection := &websocket.Conn{}
+
+			connections <- first_connection
+			connections <- second_connection
+		})
+	})
+
 	BeforeEach(func() {
 		res := config.Resource{"http://test.com", 60, 2, 10, 3, "" }
 		message = monitor.RecoveryMessage(res, []int{1, 2, 3})

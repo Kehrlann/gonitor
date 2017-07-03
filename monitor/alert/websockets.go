@@ -1,14 +1,15 @@
 package alert
 
 import (
-	"github.com/gorilla/websocket"
 	"sync"
 	"encoding/json"
+
 	"github.com/kehrlann/gonitor/monitor"
+	"github.com/kehrlann/gonitor/websockets"
 )
 
 type WebsocketsEmitter struct {
-	websocketConnections map[uint]*websocket.Conn
+	websocketConnections map[uint]*websockets.Connection
 	currentIndex         uint
 	lock                 sync.RWMutex
 }
@@ -23,9 +24,7 @@ func (emitter *WebsocketsEmitter) Emit(message *monitor.StateChangeMessage) {
 	}
 
 	for key, conn := range emitter.websocketConnections {
-
-		writeErr := conn.WriteMessage(websocket.TextMessage, jsonMessage)
-
+		writeErr := (*conn).WriteMessage(string(jsonMessage))
 		if writeErr != nil {
 			// Usually when a connection is closed, you get an error (forcefully closed or with a CloseMessage)
 			emitter.unregisterConnection(key)
@@ -36,8 +35,8 @@ func (emitter *WebsocketsEmitter) Emit(message *monitor.StateChangeMessage) {
 // NewWebsocketEmitter creates an emitter that listens for incoming websocket connections,
 // and broadcasts alerts on all incoming connections.
 // All closed connections will be automatically remove
-func NewWebsocketEmitter(receive_conn <-chan *websocket.Conn) *WebsocketsEmitter {
-	res := &WebsocketsEmitter{websocketConnections: make(map[uint]*websocket.Conn)}
+func NewWebsocketEmitter(receive_conn <-chan *websockets.Connection) *WebsocketsEmitter {
+	res := &WebsocketsEmitter{websocketConnections: make(map[uint]*websockets.Connection)}
 	go func() {
 		for conn := range receive_conn {
 			res.registerConnection(conn)
@@ -46,10 +45,11 @@ func NewWebsocketEmitter(receive_conn <-chan *websocket.Conn) *WebsocketsEmitter
 	return res
 }
 
-func (emitter *WebsocketsEmitter) registerConnection(connection *websocket.Conn) {
+func (emitter *WebsocketsEmitter) registerConnection(connection *websockets.Connection) {
 	emitter.lock.Lock()
 	defer emitter.lock.Unlock()
-	emitter.websocketConnections[emitter.currentIndex] = connection
+	connectionIndex := emitter.currentIndex
+	emitter.websocketConnections[connectionIndex] = connection
 	emitter.currentIndex++
 }
 
@@ -59,10 +59,10 @@ func (emitter *WebsocketsEmitter) unregisterConnection(key uint) {
 	delete(emitter.websocketConnections, key)
 }
 
-func (emitter *WebsocketsEmitter) getConnections() map[uint]*websocket.Conn {
+func (emitter *WebsocketsEmitter) getConnections() map[uint]*websockets.Connection {
 	emitter.lock.RLock()
 	defer emitter.lock.RUnlock()
-	new_map := make(map[uint]*websocket.Conn)
+	new_map := make(map[uint]*websockets.Connection)
 
 	for key, value := range emitter.websocketConnections {
 		new_map[key] = value

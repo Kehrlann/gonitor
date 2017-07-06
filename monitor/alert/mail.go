@@ -1,7 +1,7 @@
 package alert
 
 import (
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/kehrlann/gonitor/config"
 
 	"gopkg.in/gomail.v2"

@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	log "github.com/Sirupsen/logrus"
-	testlog "github.com/Sirupsen/logrus/hooks/test"
+	log "github.com/sirupsen/logrus"
+	testlog "github.com/sirupsen/logrus/hooks/test"
 	"github.com/kehrlann/gonitor/server/web/handlers"
 	"github.com/kehrlann/gonitor/websockets"
 )

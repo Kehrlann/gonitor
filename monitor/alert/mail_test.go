@@ -2,8 +2,8 @@ package alert
 
 import (
 	"github.com/kehrlann/gonitor/config"
-	testlog "github.com/Sirupsen/logrus/hooks/test"
-	log "github.com/Sirupsen/logrus"
+	testlog "github.com/sirupsen/logrus/hooks/test"
+	log "github.com/sirupsen/logrus"
 	
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

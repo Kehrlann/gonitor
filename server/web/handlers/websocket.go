@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gorilla/websocket"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/kehrlann/gonitor/websockets"
 )
 

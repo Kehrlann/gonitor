@@ -7,7 +7,7 @@ import (
 
 	"github.com/kehrlann/gonitor/monitor/alert"
 	"github.com/kehrlann/gonitor/config"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/kehrlann/gonitor/monitor"
 	"github.com/kehrlann/gonitor/server/web"
 )

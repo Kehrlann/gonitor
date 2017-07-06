@@ -74,7 +74,7 @@ var _ = Describe("sendMail -> ", func() {
 
 			sendMail(mailer, smtp, message)
 
-			Expect(hook.Entries).ToNot(BeEmpty())
+			Eventually(func() []*log.Entry { return hook.Entries }).ShouldNot(BeEmpty())
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 	})

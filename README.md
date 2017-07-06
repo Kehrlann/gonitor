@@ -8,7 +8,9 @@ It's a toy project to try out Go :)
 ## Todo next
 - [x] Add a websockets server, shooting fake StateChangeMessages with a ticker
 - [x] Display those messages in the default index page
-- [ ] Hook up an emitter to the websockets server
+- [x] Hook up an emitter to the websockets server
+- [x] Write a wrapper for gorilla websocket connection
+    - Make it thread-safe    
 
 ## Ideas
 ### Testing 

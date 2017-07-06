@@ -3,11 +3,11 @@ package web
 import (
 	"net/http"
 	"github.com/kehrlann/gonitor/server/web/handlers"
-	"github.com/gorilla/websocket"
+	"github.com/kehrlann/gonitor/websockets"
 )
 
-func Serve() <-chan *websocket.Conn {
-	incoming_connections := make(chan *websocket.Conn)
+func Serve() <-chan websockets.Connection {
+	incoming_connections := make(chan websockets.Connection)
 	websocket_hander := handlers.WebsocketHandler{incoming_connections}
 	serve(websocket_hander)
 	return incoming_connections

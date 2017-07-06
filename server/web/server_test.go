@@ -5,10 +5,10 @@ import (
 	"io/ioutil"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/gorilla/websocket"
 	log "github.com/Sirupsen/logrus"
 	testlog "github.com/Sirupsen/logrus/hooks/test"
 	"github.com/kehrlann/gonitor/server/web/handlers"
+	"github.com/kehrlann/gonitor/websockets"
 )
 
 var _ = Describe("Server", func() {
@@ -16,7 +16,7 @@ var _ = Describe("Server", func() {
 	var cleanup func()
 
 	BeforeSuite(func() {
-		cleanup = serve(handlers.WebsocketHandler{make(chan *websocket.Conn, 10)})
+		cleanup = serve(handlers.WebsocketHandler{make(chan websockets.Connection, 10)})
 	})
 
 	AfterSuite(func() {

@@ -8,7 +8,7 @@ import (
 
 // EmitMessages emits all messages to STDOUT, sends alerts via e-mail and executes the configured commants
 func EmitMessages(messages <-chan *monitor.StateChangeMessage,
-	websocketsConnections <- chan *websockets.Connection,
+	websocketsConnections <- chan websockets.Connection,
 	configuration *config.Configuration) {
 	emitters := []emitter{
 		&mailEmitter{&configuration.Smtp},

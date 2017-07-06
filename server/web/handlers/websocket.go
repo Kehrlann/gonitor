@@ -6,10 +6,11 @@ import (
 
 	"github.com/gorilla/websocket"
 	log "github.com/Sirupsen/logrus"
+	"github.com/kehrlann/gonitor/websockets"
 )
 
 type WebsocketHandler struct {
-	IncomingConnections chan<- *websocket.Conn
+	IncomingConnections chan<- websockets.Connection
 }
 
 func (handler WebsocketHandler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
@@ -19,5 +20,6 @@ func (handler WebsocketHandler) ServeHTTP(response http.ResponseWriter, request 
 		log.Error(fmt.Sprintf("Error establishing websocket connection : %v", err))
 		return
 	}
-	handler.IncomingConnections <- conn
+	wrapper := websockets.NewWebsocketConnection(conn)
+	handler.IncomingConnections <- wrapper
 }

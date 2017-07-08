@@ -6,11 +6,8 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [x] Add a websockets server, shooting fake StateChangeMessages with a ticker
-- [x] Display those messages in the default index page
-- [x] Hook up an emitter to the websockets server
-- [x] Write a wrapper for gorilla websocket connection
-    - Make it thread-safe    
+- [ ] Add a "hooks" folder
+
 
 ## Ideas
 ### Testing 
@@ -32,6 +29,9 @@ It's a toy project to try out Go :)
 - [ ] HTML dashboard with config
 - [ ] HTML dashboard showing datapoints with d3js / websockets
 - [ ] Try out React + RxJS ?
+
+### Misc ideas
+- [ ] Try gotrace (https://github.com/divan/gotrace)
 
 ## Done !
 - [x] Add basic HTTP server to display an HTML welcome page
@@ -55,9 +55,37 @@ It's a toy project to try out Go :)
     - [x] throw it when gonitor.config.json not found  
     - [x] print warning message, saying 'oh we created this file for you'
     - [x] what about when file creation is disabled ? should just print the file structure ?
+- [x] Add a websockets server, shooting fake StateChangeMessages with a ticker
+- [x] Display those messages in the default index page
+- [x] Hook up an emitter to the websockets server
+- [x] Write a wrapper for gorilla websocket connection
+    - Make it thread-safe
+- [x] Try expvarmon (https://github.com/divan/expvarmon)
+
 
 ## Abandonned ? 
 - [ ] Add a "wizard" to configure a polling on first launch if no config.json found
+
+## Expvarmon :
+This is extremely cool : https://github.com/divan/expvarmon . See more at : http://developers-club.com/posts/257593/
+First install expvarmon :
+`go get github.com/divan/expvarmon`
+
+For counting Goroutines, add to main.go : 
+```
+    import _ "expvar"
+    
+    [...]
+    
+    // in main() 
+    Publish("Goroutines", expvar.Func(func() interface{} { return runtime.NumGoroutine() } ))
+```
+
+Then try : 
+```
+    ./expvarmon -ports="3000" -vars="mem:memstats.Alloc,Goroutines"
+```
+
 
 ## Profiling :
 28/03/2017 : there seems to be a very small memory leak ... Hard to pin down.

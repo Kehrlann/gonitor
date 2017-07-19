@@ -6,15 +6,12 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Add a "hooks" folder
-
 
 ## Ideas
 ### Testing 
 - [ ] Integration testing of main.go ?
 
 ### Features :
-- [ ] Update the help/man page for config with Commands
 - [ ] Add a "help" flag
 - [ ] Add a "example" flag
 - [ ] Configure log level
@@ -26,14 +23,16 @@ It's a toy project to try out Go :)
 ### Features : visualisation tool
 - [ ] Save alerts in database
 - [ ] Save return codes in database
-- [ ] HTML dashboard with config
 - [ ] HTML dashboard showing datapoints with d3js / websockets
 - [ ] Try out React + RxJS ?
+- [ ] HTML dashboard with config
 
 ### Misc ideas
 - [ ] Try gotrace (https://github.com/divan/gotrace)
 
 ## Done !
+- [x] Update the default config page for config with Commands
+- [x] Add a "hooks" folder
 - [x] Add basic HTTP server to display an HTML welcome page
 - [x] Add Travis CI
 - [x] Refactor main to be more of glue code (e.g. Resource slice -> worker)

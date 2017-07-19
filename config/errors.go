@@ -22,6 +22,7 @@ one, here is a starter template. You can either replace the SMTP config with you
 don't want e-mail notifications.
 
 {
+  "globalcommand" : "/home/user/scripts/slack.sh",
   "smtp"    :
   {
     "host"        : "smtp.example.com",
@@ -46,7 +47,8 @@ don't want e-mail notifications.
 	  "intervalInSeconds" : 120,
 	  "timeoutInSeconds"  : 10,
 	  "numberOfTries"     : 10,
-	  "failureThreshold"  : 10
+	  "failureThreshold"  : 10,
+	  "command"			  : "/home/user/scripts/database.sh"
 	}
   ]
 }`, DEFAULT_CONFIG_PATH)}

@@ -44,8 +44,14 @@ func (config *Configuration) logConfig() {
 		smtp_validity = "INVALID"
 	}
 
+	globalCommand := config.GlobalCommand
+	if globalCommand == "" {
+		globalCommand = "None"
+	}
+
 	log.Info()
 	log.Info("Configuration is :")
+	log.Infof(".. Global command : %v", globalCommand)
 	log.Infof(".. SMTP (%v) :", smtp_validity)
 	log.Infof(".... 	Host         :    %v", config.Smtp.Host)
 	log.Infof(".... 	Port         :    %v", config.Smtp.Port)
@@ -62,6 +68,10 @@ func (config *Configuration) logConfig() {
 		log.Infof(".... 	TimeoutInSeconds  	:    %v", resource.TimeoutInSeconds)
 		log.Infof(".... 	NumberOfTries     	:    %v", resource.NumberOfTries)
 		log.Infof(".... 	FailureThreshold  	:    %v", resource.FailureThreshold)
+
+		if resource.Command != "" {
+			log.Infof(".... 	Specific command 	:	 %v", resource.Command)
+		}
 	}
 	log.Info()
 }

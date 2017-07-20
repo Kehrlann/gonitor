@@ -15,7 +15,7 @@ import (
 func main() {
 	flag.Usage = printUsage
 	path := flag.String("config", config.DEFAULT_CONFIG_PATH, "Path to the config file")
-	example := flag.Bool("example", false, "Print an example config")
+	example := flag.Bool("usage", false, "Print usage description, and an example config")
 	flag.Parse()
 
 	if *example {

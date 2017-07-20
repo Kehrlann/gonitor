@@ -6,14 +6,13 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
+- [ ] Clean app log outputs in tests (~ only log to /dev/null)
 
 ## Ideas
 ### Testing 
 - [ ] Integration testing of main.go ?
 
 ### Features :
-- [ ] Add a "help" flag
-- [ ] Add a "example" flag
 - [ ] Configure log level
 - [ ] Daily summary e-mail (saying i'm alive !) 
 - [ ] Per-resource recipient-list
@@ -31,6 +30,7 @@ It's a toy project to try out Go :)
 - [ ] Try gotrace (https://github.com/divan/gotrace)
 
 ## Done !
+- [x] Add a "example" flag
 - [x] Update the default config page for config with Commands
 - [x] Add a "hooks" folder
 - [x] Add basic HTTP server to display an HTML welcome page

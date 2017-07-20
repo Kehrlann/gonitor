@@ -35,7 +35,7 @@ var EXAMPLE_CONFIG = `{
 }`
 
 func PrintExampleConfig() {
-    fmt.Printf(`Gonitor gets its configuration from a JSON file. Below is a starter template. The differe
+	fmt.Printf(`Gonitor gets its configuration from a JSON file. Below is a starter template. The differe
 You can either replace the SMTP config with your own, or remove it entirely if you don't want e-mail notifications.
 
 CONFIG DETAILS :
@@ -50,6 +50,8 @@ CONFIG DETAILS :
 
     So putting "echo" as a command would print :
         'RECOVERY 2017-07-14T13:45:03 [200 0 0 0 0] http://www.example.com/'
+
+    You can find useful scripts at : https://github.com/Kehrlann/gonitor/tree/master/hooks
 
 - SMTP
     Is the SMTP config for sending alert e-mails. If this is not setup in the json, the config is still valid, but no

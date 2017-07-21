@@ -9,6 +9,7 @@ import (
 	testlog "github.com/sirupsen/logrus/hooks/test"
 	"github.com/kehrlann/gonitor/server/web/handlers"
 	"github.com/kehrlann/gonitor/websockets"
+	"github.com/gorilla/websocket"
 )
 
 var _ = Describe("Server", func() {
@@ -16,7 +17,8 @@ var _ = Describe("Server", func() {
 	var cleanup func()
 
 	BeforeSuite(func() {
-		cleanup = serve(handlers.WebsocketHandler{make(chan websockets.Connection, 10)})
+		connections := make(chan websockets.Connection, 10)
+		cleanup = serve(handlers.WebsocketHandler{connections})
 	})
 
 	AfterSuite(func() {
@@ -83,7 +85,15 @@ var _ = Describe("Server", func() {
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 
-		// TODO : add tests for websockets connections being added
+		It("Should answer 101 to a ws-enabled client", func () {
+			getCode := func() (int, error) {
+				dialer := &websocket.Dialer{}
+				_, resp, err := dialer.Dial("ws://127.0.0.1:3000/ws", nil)
+				return resp.StatusCode, err
+			}
+
+			Consistently(getCode).Should(Equal(101))
+		})
 	})
 })
 

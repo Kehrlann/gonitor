@@ -6,7 +6,7 @@ Poll websites over HTTP, analyze return codes and emit alerts (e.g. e-mails).
 It's a toy project to try out Go :)
 
 ## Todo next
-- [ ] Clean app log outputs in tests (~ only log to /dev/null)
+- [ ] Add tests for the server's websocket handler
 
 ## Ideas
 ### Testing 
@@ -30,6 +30,7 @@ It's a toy project to try out Go :)
 - [ ] Try gotrace (https://github.com/divan/gotrace)
 
 ## Done !
+- [x] Clean app log outputs in tests (~ only log to /dev/null)
 - [x] Add a "example" flag
 - [x] Update the default config page for config with Commands
 - [x] Add a "hooks" folder

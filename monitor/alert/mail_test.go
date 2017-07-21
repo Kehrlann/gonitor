@@ -66,7 +66,7 @@ var _ = Describe("sendMail -> ", func() {
 		It("Should log when something goes wrong", func() {
 			hook := testlog.NewGlobal()
 			log.SetLevel(log.ErrorLevel)
-			// TODO : how do I remove the error message from STDOUT ?
+			log.SetOutput(&nilWriter{})
 			mailer := &FakeMailer{
 				make([]*gomail.Message, 0),
 				func(m *gomail.Message) error { return errors.New("Woops") },
@@ -78,5 +78,10 @@ var _ = Describe("sendMail -> ", func() {
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 	})
-
 })
+
+type nilWriter struct {}
+
+func (w *nilWriter) Write(p []byte) (int, error) {
+	return 0, nil
+}

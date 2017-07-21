@@ -69,6 +69,7 @@ var _ = Describe("Server", func() {
 			// arrange
 			hook := testlog.NewGlobal()
 			log.SetLevel(log.ErrorLevel)
+			log.SetOutput(&nilWriter{})
 			getCode := func() (int) {
 				client := &http.Client{}
 				resp, _ := client.Get("http://127.0.0.1:3000/ws")
@@ -85,3 +86,11 @@ var _ = Describe("Server", func() {
 		// TODO : add tests for websockets connections being added
 	})
 })
+
+
+type nilWriter struct {}
+
+func (w *nilWriter) Write(p []byte) (int, error) {
+	return 0, nil
+}
+

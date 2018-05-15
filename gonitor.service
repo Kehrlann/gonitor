@@ -1,0 +1,12 @@
+[Unit]
+Description=First attempt at the Gonitor service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/gonitor --config /etc/gonitor/gonitor.config.json
+RestartSec=30
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

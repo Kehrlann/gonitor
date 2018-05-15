@@ -14,9 +14,15 @@ func (n NoDefaultConfigError) Error() string {
 
 func NewDefaultConfigError() *NoDefaultConfigError {
 	return &NoDefaultConfigError{HelpMessage: fmt.Sprintf(`
-It seems you didn't specify a config file. Gonitor attempted to load a default config file, located at  :
+It seems you didn't specify a config file. Gonitor attempted to load a default
+config file, located at :
+
 	%v
 
-No such file was found. Please create one, or specify an existing config with the -config flag. If you wish to create
-one, you can find a start template by running gonitor -example`, DEFAULT_CONFIG_PATH)}
+No such file was found. Please create one, or specify an existing config with
+the --config flag. If you wish to create one, you can find a start template by
+running:
+
+	gonitor --example
+`, DEFAULT_CONFIG_PATH)}
 }

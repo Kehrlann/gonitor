@@ -15,10 +15,16 @@ import (
 func main() {
 	flag.Usage = printUsage
 	path := flag.String("config", config.DEFAULT_CONFIG_PATH, "Path to the config file")
-	example := flag.Bool("usage", false, "Print usage description, and an example config")
+	example := flag.Bool("usage", false, "Print usage description")
+	usage := flag.Bool("example", false, "Print an example config")
 	flag.Parse()
 
 	if *example {
+		config.PrintUsage()
+		return
+	}
+
+	if *usage {
 		config.PrintExampleConfig()
 		return
 	}
@@ -57,7 +63,7 @@ func main() {
 func printUsage() {
 	fmt.Println("Gonitor is a website monitoring tool.")
 	fmt.Println()
-	fmt.Println("Usage: gonitor [-config path_to_config]")
+	fmt.Println("Usage: gonitor [--config path_to_config]")
 	fmt.Println()
 	flag.PrintDefaults()
 }

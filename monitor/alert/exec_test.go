@@ -40,7 +40,7 @@ var _ = Describe("exec : ", func() {
 				messageWithCommand := monitor.RecoveryMessage(resourceWithCommand, []int{200, 200, 200})
 
 				ret := execCommand(messageWithCommand, "")
-				Expect(ret.String()).To(ContainSubstring("unknown subcommand"))
+				Expect(ret.String()).To(ContainSubstring("unknown command"))
 			})
 		}
 	})

@@ -16,11 +16,9 @@ var _ = Describe("Websockets integrations tests -> ", func() {
 
 	var server *testServer
 	//message := monitor.RecoveryMessage(config.Resource{}, []int{})
-	var conn chan *websocket.Conn
 
 	BeforeEach(func() {
 		server = newServer()
-		conn = make(chan *websocket.Conn, 10)
 	})
 
 	AfterEach(func() {

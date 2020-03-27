@@ -1,11 +1,11 @@
 package alert
 
 import (
-	"github.com/kehrlann/gonitor/config"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/monitor"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/websockets"
 	"errors"
 	"sync"
 	"encoding/json"

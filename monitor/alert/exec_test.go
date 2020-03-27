@@ -3,10 +3,10 @@ package alert
 import (
 	"runtime"
 
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("exec : ", func() {

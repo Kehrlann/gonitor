@@ -5,7 +5,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 )
 
 var _ = Describe("analyze", func() {

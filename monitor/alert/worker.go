@@ -1,9 +1,9 @@
 package alert
 
 import (
-	"github.com/kehrlann/gonitor/config"
-	"github.com/kehrlann/gonitor/monitor"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/websockets"
 )
 
 // EmitMessages emits all messages to STDOUT, sends alerts via e-mail and executes the configured commants

@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"time"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 // commandEmitter emits message by running a command, and passing the fields of the StateChange message as the arguments

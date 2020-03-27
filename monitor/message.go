@@ -6,7 +6,7 @@ import (
 	"text/template"
 	"bytes"
 
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 )
 
 // StateChangeMessage represents either a failure or a recovery

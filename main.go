@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kehrlann/gonitor/monitor/alert"
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/monitor/alert"
+	"github.com/Kehrlann/gonitor/config"
 	log "github.com/sirupsen/logrus"
-	"github.com/kehrlann/gonitor/monitor"
-	"github.com/kehrlann/gonitor/server/web"
+	"github.com/Kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/server/web"
 )
 
 func main() {

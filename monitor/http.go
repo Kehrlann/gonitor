@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 )
 
 type fetcher interface {

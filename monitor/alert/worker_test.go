@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"sync"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 var _ = Describe("Worker", func() {

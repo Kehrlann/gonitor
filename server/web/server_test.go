@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/gomega"
 	log "github.com/sirupsen/logrus"
 	testlog "github.com/sirupsen/logrus/hooks/test"
-	"github.com/kehrlann/gonitor/server/web/handlers"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/server/web/handlers"
+	"github.com/Kehrlann/gonitor/websockets"
 	"github.com/gorilla/websocket"
 )
 

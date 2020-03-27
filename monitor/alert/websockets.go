@@ -4,8 +4,8 @@ import (
 	"sync"
 	"encoding/json"
 
-	"github.com/kehrlann/gonitor/monitor"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/websockets"
 )
 
 type WebsocketsEmitter struct {

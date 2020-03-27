@@ -2,7 +2,7 @@ package alert
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 // logEmitter logs the messages in the console

@@ -1,7 +1,7 @@
 package alert
 
 import (
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 	testlog "github.com/sirupsen/logrus/hooks/test"
 	log "github.com/sirupsen/logrus"
 	
@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/gomail.v2"
 	"errors"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 type FakeMailer struct {

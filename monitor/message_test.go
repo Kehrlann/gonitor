@@ -1,7 +1,7 @@
 package monitor
 
 import (
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

@@ -3,7 +3,7 @@ package monitor
 import (
 	"container/ring"
 
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 )
 
 // analyze takes a channel of response Codes, and, every time it receives a new

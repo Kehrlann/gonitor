@@ -2,10 +2,10 @@ package alert
 
 import (
 	log "github.com/sirupsen/logrus"
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 
 	"gopkg.in/gomail.v2"
-	"github.com/kehrlann/gonitor/monitor"
+	"github.com/Kehrlann/gonitor/monitor"
 )
 
 // Mail emitter emits messages via e-mail

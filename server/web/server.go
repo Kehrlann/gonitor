@@ -2,8 +2,8 @@ package web
 
 import (
 	"net/http"
-	"github.com/kehrlann/gonitor/server/web/handlers"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/server/web/handlers"
+	"github.com/Kehrlann/gonitor/websockets"
 )
 
 func Serve() <-chan websockets.Connection {

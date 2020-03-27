@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	log "github.com/sirupsen/logrus"
-	"github.com/kehrlann/gonitor/websockets"
+	"github.com/Kehrlann/gonitor/websockets"
 )
 
 type WebsocketHandler struct {

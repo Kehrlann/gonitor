@@ -3,7 +3,7 @@ package monitor
 import (
 	"time"
 
-	"github.com/kehrlann/gonitor/config"
+	"github.com/Kehrlann/gonitor/config"
 )
 
 // Monitor takes a resource and polls the given HTTP url for errors , and emits failure / recovery messages accordingly

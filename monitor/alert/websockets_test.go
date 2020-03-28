@@ -123,9 +123,9 @@ var _ = Describe("websockets -> ", func() {
 
 		It("Should unregister a erroring connections", func() {
 			connections <- NewErrorFake()
+			Eventually(emitter.getConnections).ShouldNot(BeEmpty()) // wait for the connection to be registered
 
 			emitter.Emit(monitor.ErrorMessage(config.Resource{}, []int{}))
-
 			Eventually(emitter.getConnections).Should(BeEmpty())
 		})
 	})

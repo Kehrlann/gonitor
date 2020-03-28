@@ -9,5 +9,5 @@ import (
 
 func TestGonitor(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "gonitor/websockts Suite")
+	RunSpecs(t, "gonitor/websockets Suite")
 }

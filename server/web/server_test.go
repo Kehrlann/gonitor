@@ -81,7 +81,7 @@ var _ = Describe("Server", func() {
 
 			// act / assert
 			Consistently(getCode).Should(Equal(400))
-			Eventually(func() []*log.Entry { return hook.Entries }).ShouldNot(BeEmpty())
+			Eventually(func() []log.Entry { return hook.Entries }).ShouldNot(BeEmpty())
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 

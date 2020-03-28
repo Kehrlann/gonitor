@@ -4,7 +4,7 @@ import (
 	"github.com/Kehrlann/gonitor/config"
 	testlog "github.com/sirupsen/logrus/hooks/test"
 	log "github.com/sirupsen/logrus"
-	
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -74,7 +74,7 @@ var _ = Describe("sendMail -> ", func() {
 
 			sendMail(mailer, smtp, message)
 
-			Eventually(func() []*log.Entry { return hook.Entries }).ShouldNot(BeEmpty())
+			Eventually(func() []log.Entry { return hook.Entries }).ShouldNot(BeEmpty())
 			Expect(hook.LastEntry().Level).To(Equal(log.ErrorLevel))
 		})
 	})

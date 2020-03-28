@@ -11,8 +11,3 @@ gonitor
 gonitor.config.json
 debug.test
 *.prof
-
-#################################
-# Ignore vendored deps          #
-#################################
-vendor/

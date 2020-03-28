@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	log "github.com/sirupsen/logrus"
 
-	"gopkg.in/jarcoal/httpmock.v1"
+	"github.com/jarcoal/httpmock"
 )
 
 var _ = Describe("Http", func() {

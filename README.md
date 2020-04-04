@@ -63,7 +63,7 @@ It's a toy project to try out Go :)
 - [x] Try expvarmon (https://github.com/divan/expvarmon)
 
 
-## Abandonned ? 
+## Abandoned ? 
 - [ ] Add a "wizard" to configure a polling on first launch if no config.json found
 
 ## Expvarmon :
